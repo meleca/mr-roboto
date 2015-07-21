@@ -1,20 +1,15 @@
 # -*- coding: utf-8 -*-
-from irc3 import IrcBot
-from decouple import config
+from irc3 import IrcBot, utils
+import sys
 
 
 def main():
-    # load bot settings
-    settings = dict(
-        nick=config('nick'),
-        autojoins=config('autojoins', cast=lambda v: [s.strip().strip('\\') for s in v.split('\n') if s]),
-        host=config('host'),
-        port=config('port', cast=int),
-        ssl=config('ssl', cast=bool),
-        includes=config('includes', cast=lambda v: [s.strip() for s in v.split('\n') if s])
-    )
+    # parse configs
+    if len(sys.argv) != 2:
+        print('Usage: mr_roboto <settings_file>')
+    config = utils.parse_config('bot', sys.argv[1])
     # start bot
-    bot = IrcBot.from_config(settings)
+    bot = IrcBot.from_config(config)
     bot.run(forever=True)
 
 if __name__ == '__main__':
