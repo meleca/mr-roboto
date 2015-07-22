@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    excuses
+    commit
 """
 from irc3 import plugin
 from irc3.plugins.command import command
@@ -9,9 +9,9 @@ import aiohttp
 
 
 @plugin
-class Excuses(object):
+class Commits(object):
     """
-    Commands that prints Programmer Excuses
+    Commands that prints Commit Messages
     """
 
     def __init__(self, bot):
@@ -19,11 +19,11 @@ class Excuses(object):
 
     @command(permission='view')
     @asyncio.coroutine
-    def excuse(self, mask, target, args):
+    def commit(self, mask, target, args):
         """
-            Excuse
+            Commit
 
-            %%excuse
+            %%commit
         """
-        request = yield from aiohttp.request('GET', 'https://api.githunt.io/programmingexcuses')
+        request = yield from aiohttp.request('GET', 'http://whatthecommit.com/index.txt')
         return (yield from request.text())
