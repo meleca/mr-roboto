@@ -6,6 +6,7 @@ from irc3 import plugin
 from irc3.plugins.command import command
 import asyncio
 import aiohttp
+import re
 
 
 @plugin
@@ -49,7 +50,7 @@ class Commands(object):
 
         # the horoscopo API service provides daily information about horoscope
         request = yield from aiohttp.request('GET', 'http://developers.agenciaideias.com.br/horoscopo/json')
-        response = (yield from request.json())
+        response = yield from request.json()
         if (response and 'signos' in response):
             the_one = None
             for zodiac_name, zodiac_regex in zodiac_table.iteritems():
