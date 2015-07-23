@@ -73,9 +73,9 @@ class Commands(object):
         # the horoscopo API service provides daily information about horoscope
         request = yield from aiohttp.request('GET', 'http://developers.agenciaideias.com.br/horoscopo/json')
         response = yield from request.json()
-        if (response and 'signos' in response):
+        if response and 'signos' in response:
             the_one = None
-            for zodiac_name, zodiac_regex in zodiac_table.iteritems():
+            for zodiac_name, zodiac_regex in zodiac_table.items():
                 if re.match(zodiac_regex, wished):
                     the_one = zodiac_name
                     break
