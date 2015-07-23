@@ -20,6 +20,28 @@ class Commands(object):
 
     @command(permission='view')
     @asyncio.coroutine
+    def commit(self, mask, target, args):
+        """
+            Prints Commit Messages
+
+            %%commit
+        """
+        request = yield from aiohttp.request('GET', 'http://whatthecommit.com/index.txt')
+        return (yield from request.text())
+
+    @command(permission='view')
+    @asyncio.coroutine
+    def excuse(self, mask, target, args):
+        """
+            Prints Programmer Excuses
+
+            %%excuse
+        """
+        request = yield from aiohttp.request('GET', 'https://api.githunt.io/programmingexcuses')
+        return (yield from request.text())
+
+    @command(permission='view')
+    @asyncio.coroutine
     def horoscope(self, mask, target, args):
         """
             Prints daily horoscope (pt_br only)
