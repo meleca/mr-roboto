@@ -7,6 +7,7 @@ def main():
     # parse configs
     if len(sys.argv) != 2:
         print('Usage: mr_roboto <settings_file>')
+        sys.exit(1)
     config = utils.parse_config('bot', sys.argv[1])
     # start bot
     bot = IrcBot.from_config(config)
