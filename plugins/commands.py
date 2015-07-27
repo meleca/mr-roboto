@@ -12,7 +12,7 @@ import re
 @plugin
 class Commands(object):
     """
-    Handle commands called by users
+        Handle commands called by users
     """
 
     def __init__(self, bot):
@@ -92,3 +92,34 @@ class Commands(object):
                             msg = zmsg
                         break
         return msg
+
+    @command(permission='admin')
+    @asyncio.coroutine
+    def greeting(self, mask, target, args):
+        """
+            Save new greeting message to a specific nick
+
+            %%greeting <nick> <message>...
+        """
+        try:
+            # create greetings key for channel plus nick
+            channel = target.replace('#', '')
+            nick = args['<nick>'].lower()
+            key = 'greetings:%s:%s' % (channel, nick)
+
+            # prepare greeting message
+            message = ' '.join(args['<message>'])
+
+            self.bot.db.SIGINT()
+
+            # update Redis record for this key
+            greeting_list = self.bot.db.get(key)
+            if greeting_list is None:
+                greeting_list = dict(greetings=message)
+            else:
+                greeting_list['greetings'] += '\n' + message
+            self.bot.db[key] = greeting_list
+
+            return 'Okie dokie'
+        except Exception as e:
+            return 'Sorry, looks like something went wrong :('
