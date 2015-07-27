@@ -2,9 +2,10 @@
 """
     Bot behavior
 """
-from irc3 import plugin
+from irc3 import plugin, event, rfc
 from irc3.plugins.cron import cron
 import random
+
 
 @plugin
 class Behavior(object):
@@ -15,7 +16,7 @@ class Behavior(object):
     def __init__(self, bot):
         self.bot = bot
 
-    ### Here we can schedule something to be said or made in a specific time ###
+    # Here we can schedule something to be said or made in a specific time
 
     @cron('* 9 * * 1-5')
     def good_morning(self):
@@ -44,3 +45,15 @@ class Behavior(object):
 
         for channel in list(self.bot.channels):
             self.bot.privmsg(channel, to_say)
+
+    # Here we can handle channel events to trigger something to be said or made
+
+    @event(rfc.JOIN)
+    def say_hi(self, mask=None, channel=None):
+        """
+            Say hi for everyone who join the channel
+        """
+        # TODO as soon as possible load from Redis
+        # customized per nick greenting messages
+        message = '%s: Hi!' % mask.nick
+        self.bot.privmsg(channel, message)
