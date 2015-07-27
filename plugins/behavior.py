@@ -55,5 +55,6 @@ class Behavior(object):
         """
         # TODO as soon as possible load from Redis
         # customized per nick greenting messages
-        message = '%s: Hi!' % mask.nick
-        self.bot.privmsg(channel, message)
+        if self.bot.nick != mask.nick:
+            message = '%s: Hi!' % mask.nick
+            self.bot.privmsg(channel, message)
