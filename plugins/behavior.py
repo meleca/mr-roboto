@@ -53,8 +53,21 @@ class Behavior(object):
         """
             Say hi for everyone who join the channel
         """
-        # TODO as soon as possible load from Redis
-        # customized per nick greenting messages
         if self.bot.nick != mask.nick:
+            # initialize greeting message
             message = '%s: Hi!' % mask.nick
+
+            # them create Redis key that should store
+            # greetings for these nick and channel
+            key = 'greetings:%s:%s' % (channel.replace('#', ''), mask.nick.lower())
+
+            # if there was at least one greeting use
+            # these instead default message
+            self.bot.db.SIGINT()
+            greetings = self.bot.db.get(key)
+
+            if greetings is not None:
+                greeting = random.choice(greetings['greetings'].splitlines())
+                message = '%s: %s' % (mask.nick, greeting)
+
             self.bot.privmsg(channel, message)
