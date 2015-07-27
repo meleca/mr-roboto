@@ -4,7 +4,7 @@
 """
 from irc3 import plugin
 from irc3.plugins.command import command
-import asyncio
+from irc3.compat import asyncio
 import aiohttp
 import re
 
