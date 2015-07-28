@@ -18,7 +18,7 @@ class Behavior(object):
 
     # Here we can schedule something to be said or made in a specific time
 
-    @cron('* 9 * * 1-5')
+    @cron('0 9 * * 1-5')
     def good_morning(self):
         """
             Says something in the morning at work days
@@ -35,7 +35,7 @@ class Behavior(object):
         for channel in list(self.bot.channels):
             self.bot.privmsg(channel, to_say)
 
-    @cron('* 12 * * 1-5')
+    @cron('0 12 * * 1-5')
     def lunch_time(self):
         """
             Say something at 12 am at work days
