@@ -3,6 +3,7 @@
 # install required packages
 apt-get update
 apt-get install -y python3 python3-pip redis-server
+apt-get build-dep python3-lxml
 
 # bot root directory
 BOT_DIR='/vagrant'

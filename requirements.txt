@@ -2,5 +2,6 @@ aiocron==0.3
 aiohttp==0.16.6
 docopt==0.6.2
 irc3==0.8.1
+lxml==3.4.4
 venusian==1.0
 redis==2.10.3
