@@ -10,6 +10,7 @@ import aiohttp
 import random
 import re
 
+
 @plugin
 class Behavior(object):
     """
@@ -20,18 +21,20 @@ class Behavior(object):
         self.bot = bot
 
         # List of rules for channel messages
-        # Each item has a tuple containing an RE and a reference to the procedure to be executed
+        # Each item has a tuple containing an RE and a reference to the
+        # procedure to be executed
         self.channel_rules = self.compile_rules([
-            ( '(https?://[^ \t>\n\r\x01-\x1f]+)', self.handle_url ),
+            ('(https?://[^ \t>\n\r\x01-\x1f]+)', self.handle_url),
         ])
 
     def compile_rules(self, rules):
         """
-            Compile a list of RE and return a new list with 
+            Compile a list of RE and return a new list with
             each RE compiled and its procedure reference
         """
         if type(rules) is list:
-            return [ (re.compile(rule, re.UNICODE), func) for (rule, func) in rules ]
+            return [(re.compile(rule, re.UNICODE), func)
+                    for (rule, func) in rules]
         else:
             return None
 
@@ -78,7 +81,9 @@ class Behavior(object):
 
             # them create Redis key that should store
             # greetings for these nick and channel
-            key = 'greetings:%s:%s' % (channel.replace('#', ''), mask.nick.lower())
+            key = 'greetings:%s:%s' % (
+                channel.replace('#', ''),
+                mask.nick.lower())
 
             # if there was at least one greeting use
             # these instead default message
@@ -97,12 +102,12 @@ class Behavior(object):
         """
             Handle channel messages
         """
-        if (self.channel_rules
-            and type(self.channel_rules) is list):
+        if self.channel_rules and type(self.channel_rules) is list:
 
             try:
                 # Check channel rules looking for some nice interaction
-                # If at least one rule match with the channel message execute it's callback
+                # If at least one rule match with the channel message execute
+                # it's callback
                 for rule, func in self.channel_rules:
                     match = rule.search(data)
                     if match:
@@ -114,16 +119,60 @@ class Behavior(object):
 
     @asyncio.coroutine
     def handle_url(self, target, url):
-            """
-                Load URL address and send its web page title back to the channel
-            """
-            # First of all load the page
-            request = yield from aiohttp.request('GET', url.decode('utf-8'))
-            response = yield from request.text()
-
-            # Then parses its HTML and search for the title
-            page = html.fromstring(response)
+        """
+            Load URL address and send its web page title back to the
+            channel
+        """
+        # MIME Type Handling functions
+        def handle_text(target, subtype, data):
+            content = str(data, encoding='utf-8')
+            page = html.fromstring(content)
             title = page.findtext('.//title')
 
             if title is not None:
                 self.bot.privmsg(target, ('[%s]' % title))
+
+        def handle_image(target, subtype, data):
+            self.bot.privmsg(target, 'Looks like an image')
+
+        def handle_audio(target, subtype, data):
+            self.bot.privmsg(target, 'Do you know I\'m deaf right?')
+
+        def handle_video(target, subtype, data):
+            self.bot.privmsg(target, 'For God sake I\'m blind')
+
+        def handle_default(target, subtype, data):
+            self.bot.privmsg(target, 'What kind of weed is that?')
+
+        # MIME Type dict
+        type_handlers = {
+            u'text': handle_text,
+            u'image': handle_image,
+            u'audio': handle_audio,
+            u'video': handle_video
+        }
+
+        # First of all load the page
+        request = yield from aiohttp.request('GET', url.decode('utf-8'))
+
+        # Extract mime type
+        rule = re.compile('^(\w+)/([\w\-\+]+)( *;.*)?$')
+        match = rule.search(request.headers['CONTENT-TYPE'])
+        if not match:
+            self.bot.privmsg(
+                target,
+                'My sources say that this links does not exists')
+            return
+
+        mime_type = match.group(1)
+        subtype = match.group(2)
+
+        # Then parses its HTML and search for the title
+        data = yield from request.read()
+        request.close()
+
+        # Handle content
+        if mime_type in type_handlers:
+            type_handlers[mime_type](target, subtype, data)
+        else:
+            self.handle_default(target, subtype, data)

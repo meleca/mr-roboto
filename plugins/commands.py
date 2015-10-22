@@ -26,7 +26,9 @@ class Commands(object):
 
             %%commit
         """
-        request = yield from aiohttp.request('GET', 'http://whatthecommit.com/index.txt')
+        request = yield from aiohttp.request(
+            'GET',
+            'http://whatthecommit.com/index.txt')
         return (yield from request.text())
 
     @command(permission='view')
@@ -37,7 +39,9 @@ class Commands(object):
 
             %%excuse
         """
-        request = yield from aiohttp.request('GET', 'https://api.githunt.io/programmingexcuses')
+        request = yield from aiohttp.request(
+            'GET',
+            'https://api.githunt.io/programmingexcuses')
         return (yield from request.text())
 
     @command(permission='view')
@@ -71,7 +75,9 @@ class Commands(object):
         msg = 'Os astros parecem confusos, e eu mais ainda'
 
         # the horoscopo API service provides daily information about horoscope
-        request = yield from aiohttp.request('GET', 'http://developers.agenciaideias.com.br/horoscopo/json')
+        request = yield from aiohttp.request(
+            'GET',
+            'http://developers.agenciaideias.com.br/horoscopo/json')
         response = yield from request.json()
         if response and 'signos' in response:
             the_one = None
