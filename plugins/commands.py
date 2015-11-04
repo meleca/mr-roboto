@@ -7,6 +7,7 @@ from irc3.plugins.command import command
 from irc3.compat import asyncio
 import aiohttp
 import re
+import random
 
 
 @plugin
@@ -129,3 +130,65 @@ class Commands(object):
             return 'Okie dokie'
         except Exception as e:
             return 'Sorry, looks like something went wrong :('
+
+    @command(permission='view')
+    @asyncio.coroutine
+    def joke(self, mask, target, args):
+        """
+            Prints a Joke. 
+            You can also pass a subject for an especific kind of joke. 
+            The available subjects are: 
+                chuck norris,
+                yo momma
+
+            %%joke [<subject>...]
+        """
+        # List of available APIs
+        jokes_api = {
+            'icndb': 'http://api.icndb.com/jokes/random?escape=javascript',
+            'yomomma': 'http://api.yomomma.info/',
+            'tambal': 'http://tambal.azurewebsites.net/joke/random'
+        }
+
+        # Check if there is some subject
+        subject = None
+        if '<subject>' in args and len(args['<subject>']) > 0:
+            # Convert subjects to a single lower case string
+            subject_list = [ s.lower() for s in args['<subject>'] ]
+            subject = ' '.join(subject_list)
+
+        # Choose one API to request
+        url = None
+
+        if subject == 'chuck norris':
+            # Pick one from icndb API
+            url = jokes_api['icndb']
+        elif subject == 'yo momma':
+            # Pick one from yo momma API
+            url = jokes_api['yomomma']
+        else:
+            # Pick a random source
+            url = random.choice(list(jokes_api.values()))
+
+        try:
+            request = yield from aiohttp.request('GET', url)
+            response = yield from request.json()
+
+            # There is two different structure possible for the response
+            # one has a 'joke' field at the response root
+            # the other one the 'joke' field is inside an element called 'value'
+            # so we must try both
+            if type(response) is dict:
+                if 'joke' in response:
+                    return response['joke']
+                elif ('value' in response 
+                    and type(response['value']) is dict 
+                    and 'joke' in response['value']):
+                    return response['value']['joke']
+
+            # No joke? That it is really sad :(
+            raise Exception('No joke found')
+
+        except Exception as e:
+            print(e)
+            return 'All work and no play makes Jack a dull boy'
