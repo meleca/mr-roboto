@@ -130,7 +130,7 @@ class Behaviors(object):
             title = page.findtext('.//title')
 
             if title is not None:
-                self.bot.privmsg(target, ('[%s]' % title))
+                self.bot.privmsg(target, ('[%s]' % title.strip()))
 
         def handle_image(target, subtype, data):
             self.bot.privmsg(target, 'Looks like an image')
