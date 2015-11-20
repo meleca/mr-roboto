@@ -12,7 +12,7 @@ import re
 
 
 @plugin
-class Behavior(object):
+class Behaviors(object):
     """
         Defines bot's behavior by scheduling actions or handling channel events
     """
