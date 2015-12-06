@@ -8,6 +8,7 @@ from irc3.compat import asyncio
 import aiohttp
 import re
 import random
+import json
 
 
 @plugin
@@ -192,3 +193,28 @@ class Commands(object):
         except Exception as e:
             print(e)
             return 'All work and no play makes Jack a dull boy'
+
+    @command(permission='view')
+    @asyncio.coroutine
+    def cebolate(self, mask, target, args):
+        """
+            Prints message translated to Cebolinha's dialect
+
+            %%cebolate <message>...
+        """
+        method = 'POST'
+        url = 'http://cebolatol.julianofernandes.com.br/api/tlanslate'
+        payload = {'message': ' '.join(args['<message>'])}
+        headers = {'content-type': 'application/json'}
+
+        request = yield from aiohttp.request(
+            method, url, data=json.dumps(payload), headers=headers)
+        response = yield from request.json()
+
+        if type(response) is dict:
+            if 'phlase' in response:
+                return response['phlase']
+            elif 'ellol' in response:
+                return response['ellol']
+
+        return 'Sorry, something went wlong'
