@@ -13,8 +13,8 @@ class ReloadEventHandler(FileSystemEventHandler):
     def on_modified(self, event):
         super(ReloadEventHandler, self).on_modified(event)
 
-        if event.src_path.endswith(".py") and \
-                os.path.dirname(event.src_path).endswith("plugins"):
+        if (event.src_path.endswith(".py") and
+            os.path.dirname(event.src_path).endswith("plugins")):
             local_plugins = filter(lambda lp: lp.startswith("plugins"),
                                    self.config["includes"])
             self.bot.reload(*local_plugins)
