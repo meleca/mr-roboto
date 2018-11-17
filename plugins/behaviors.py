@@ -26,6 +26,11 @@ class Behaviors(object):
             ('(https?://[^ \t>\n\r\x01-\x1f]+)', self.handle_url),
         ])
 
+    @classmethod
+    def reload(cls, old):
+        print("reloading plugin {}".format(cls.__name__))
+        return cls(old.bot)
+
     def compile_rules(self, rules):
         """
             Compile a list of RE and return a new list with

@@ -19,6 +19,11 @@ class Commands(object):
     def __init__(self, bot):
         self.bot = bot
 
+    @classmethod
+    def reload(cls, old):
+        print("reloading plugin {}".format(cls.__name__))
+        return cls(old.bot)
+
     @command(permission='view')
     async def commit(self, mask, target, args):
         """
