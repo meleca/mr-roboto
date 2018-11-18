@@ -4,7 +4,6 @@
 """
 from irc3 import plugin, event, rfc
 from irc3.plugins.cron import cron
-from irc3.compat import asyncio
 from lxml import html
 import aiohttp
 import random
@@ -26,6 +25,11 @@ class Behaviors(object):
         self.channel_rules = self.compile_rules([
             ('(https?://[^ \t>\n\r\x01-\x1f]+)', self.handle_url),
         ])
+
+    @classmethod
+    def reload(cls, old):
+        print("reloading plugin {}".format(cls.__name__))
+        return cls(old.bot)
 
     def compile_rules(self, rules):
         """
@@ -97,8 +101,7 @@ class Behaviors(object):
             self.bot.privmsg(channel, message)
 
     @event(rfc.PRIVMSG)
-    @asyncio.coroutine
-    def handle_message(self, mask=None, event=None, target=None, data=None):
+    async def handle_message(self, mask=None, event=None, target=None, data=None):
         """
             Handle channel messages
         """
@@ -111,14 +114,13 @@ class Behaviors(object):
                 for rule, func in self.channel_rules:
                     match = rule.search(data)
                     if match:
-                        yield from func(target, match.group(1).encode('utf-8'))
+                        await func(target, match.group(1).encode('utf-8'))
 
             except Exception as e:
                 print(e)
                 self.bot.privmsg(target, 'Booom shakalaka')
 
-    @asyncio.coroutine
-    def handle_url(self, target, url):
+    async def handle_url(self, target, url):
         """
             Load URL address and send its web page title back to the
             channel
@@ -153,23 +155,22 @@ class Behaviors(object):
         }
 
         # First of all load the page
-        request = yield from aiohttp.request('GET', url.decode('utf-8'))
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url.decode('utf-8')) as request:
+                # Extract mime type
+                rule = re.compile('^(\w+)/([\w\-\+]+)( *;.*)?$')
+                match = rule.search(request.headers['CONTENT-TYPE'])
+                if not match:
+                    self.bot.privmsg(
+                        target,
+                        'My sources say that this links does not exists')
+                    return
 
-        # Extract mime type
-        rule = re.compile('^(\w+)/([\w\-\+]+)( *;.*)?$')
-        match = rule.search(request.headers['CONTENT-TYPE'])
-        if not match:
-            self.bot.privmsg(
-                target,
-                'My sources say that this links does not exists')
-            return
+                mime_type = match.group(1)
+                subtype = match.group(2)
 
-        mime_type = match.group(1)
-        subtype = match.group(2)
-
-        # Then parses its HTML and search for the title
-        data = yield from request.read()
-        request.close()
+                # Then parses its HTML and search for the title
+                data = await request.read()
 
         # Handle content
         if mime_type in type_handlers:

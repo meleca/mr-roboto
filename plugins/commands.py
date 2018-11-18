@@ -4,7 +4,6 @@
 """
 from irc3 import plugin
 from irc3.plugins.command import command
-from irc3.compat import asyncio
 import aiohttp
 import re
 import random
@@ -20,35 +19,37 @@ class Commands(object):
     def __init__(self, bot):
         self.bot = bot
 
+    @classmethod
+    def reload(cls, old):
+        print("reloading plugin {}".format(cls.__name__))
+        return cls(old.bot)
+
     @command(permission='view')
-    @asyncio.coroutine
-    def commit(self, mask, target, args):
+    async def commit(self, mask, target, args):
         """
             Prints Commit Messages
 
             %%commit
         """
-        request = yield from aiohttp.request(
-            'GET',
-            'http://whatthecommit.com/index.txt')
-        return (yield from request.text())
+        url = "http://whatthecommit.com/index.txt"
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as response:
+                return await response.text()
 
     @command(permission='view')
-    @asyncio.coroutine
-    def excuse(self, mask, target, args):
+    async def excuse(self, mask, target, args):
         """
             Prints Programmer Excuses
 
             %%excuse
         """
-        request = yield from aiohttp.request(
-            'GET',
-            'https://api.githunt.io/programmingexcuses')
-        return (yield from request.text())
+        url = "https://api.githunt.io/programmingexcuses"
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as response:
+                return await response.text()
 
     @command(permission='view')
-    @asyncio.coroutine
-    def horoscope(self, mask, target, args):
+    async def horoscope(self, mask, target, args):
         """
             Prints daily horoscope (pt_br only)
 
@@ -77,10 +78,11 @@ class Commands(object):
         msg = 'Os astros parecem confusos, e eu mais ainda'
 
         # the horoscopo API service provides daily information about horoscope
-        request = yield from aiohttp.request(
-            'GET',
-            'http://developers.agenciaideias.com.br/horoscopo/json')
-        response = yield from request.json()
+        url = "http://developers.agenciaideias.com.br/horoscopo/json"
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as response:
+                response = await response.json(content_type=None)
+
         if response and 'signos' in response:
             the_one = None
             for zodiac_name, zodiac_regex in zodiac_table.items():
@@ -102,8 +104,7 @@ class Commands(object):
         return msg
 
     @command(permission='admin')
-    @asyncio.coroutine
-    def greeting(self, mask, target, args):
+    async def greeting(self, mask, target, args):
         """
             Save new greeting message to a specific nick
 
@@ -133,12 +134,11 @@ class Commands(object):
             return 'Sorry, looks like something went wrong :('
 
     @command(permission='view')
-    @asyncio.coroutine
-    def joke(self, mask, target, args):
+    async def joke(self, mask, target, args):
         """
-            Prints a Joke. 
-            You can also pass a subject for an especific kind of joke. 
-            The available subjects are: 
+            Prints a Joke.
+            You can also pass a subject for an especific kind of joke.
+            The available subjects are:
                 chuck norris,
                 yo momma
 
@@ -148,7 +148,6 @@ class Commands(object):
         jokes_api = {
             'icndb': 'http://api.icndb.com/jokes/random?escape=javascript',
             'yomomma': 'http://api.yomomma.info/',
-            'tambal': 'http://tambal.azurewebsites.net/joke/random'
         }
 
         # Check if there is some subject
@@ -172,8 +171,9 @@ class Commands(object):
             url = random.choice(list(jokes_api.values()))
 
         try:
-            request = yield from aiohttp.request('GET', url)
-            response = yield from request.json()
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url) as response:
+                    response = await response.json(content_type=None)
 
             # There is two different structure possible for the response
             # one has a 'joke' field at the response root
@@ -182,8 +182,8 @@ class Commands(object):
             if type(response) is dict:
                 if 'joke' in response:
                     return response['joke']
-                elif ('value' in response 
-                    and type(response['value']) is dict 
+                elif ('value' in response
+                    and type(response['value']) is dict
                     and 'joke' in response['value']):
                     return response['value']['joke']
 
@@ -195,8 +195,7 @@ class Commands(object):
             return 'All work and no play makes Jack a dull boy'
 
     @command(permission='view')
-    @asyncio.coroutine
-    def cebolate(self, mask, target, args):
+    async def cebolate(self, mask, target, args):
         """
             Prints message translated to Cebolinha's dialect
 
@@ -207,9 +206,10 @@ class Commands(object):
         payload = {'message': ' '.join(args['<message>'])}
         headers = {'content-type': 'application/json'}
 
-        request = yield from aiohttp.request(
-            method, url, data=json.dumps(payload), headers=headers)
-        response = yield from request.json()
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, data=json.dumps(payload),
+                                    headers=headers) as response:
+                response = await reponse.json()
 
         if type(response) is dict:
             if 'phlase' in response:
