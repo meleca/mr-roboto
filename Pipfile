@@ -11,6 +11,7 @@ redis = "*"
 lxml = "*"
 aiohttp = "*"
 aiocron = "*"
+watchdog = "*"
 
 [requires]
 python_version = "3.7"
