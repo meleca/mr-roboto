@@ -126,8 +126,8 @@ class Behaviors(object):
             channel
         """
         # MIME Type Handling functions
-        def handle_text(target, subtype, data):
-            content = str(data, encoding='utf-8')
+        def handle_text(target, subtype, data, charset):
+            content = str(data, encoding=charset)
             page = html.fromstring(content)
             title = page.findtext('.//title')
 
@@ -174,6 +174,9 @@ class Behaviors(object):
 
         # Handle content
         if mime_type in type_handlers:
-            type_handlers[mime_type](target, subtype, data)
+            if mime_type == u'text':
+                type_handlers[mime_type](target, subtype, data, request.charset)
+            else:
+                type_handlers[mime_type](target, subtype, data)
         else:
             self.handle_default(target, subtype, data)
