@@ -60,3 +60,6 @@ settings.ini
 
 # Vagrant directory
 .vagrant
+
+# Ignore local database files
+*.db
