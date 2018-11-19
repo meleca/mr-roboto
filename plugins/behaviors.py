@@ -126,8 +126,15 @@ class Behaviors(object):
             channel
         """
         # MIME Type Handling functions
-        def handle_text(target, subtype, data):
-            content = str(data, encoding='utf-8')
+        def handle_text(target, subtype, data, charset):
+            try:
+                content = str(data, encoding=charset)
+            except UnicodeDecodeError as e:
+                # It's still possible that part of the site processing changes
+                # the encoding (i.e. ascii animations). Hence we try to find the
+                # title within the range with correct charset
+                content = str(data[:e.end-1], encoding=charset)
+
             page = html.fromstring(content)
             title = page.findtext('.//title')
 
@@ -174,6 +181,9 @@ class Behaviors(object):
 
         # Handle content
         if mime_type in type_handlers:
-            type_handlers[mime_type](target, subtype, data)
+            if mime_type == u'text':
+                type_handlers[mime_type](target, subtype, data, request.charset)
+            else:
+                type_handlers[mime_type](target, subtype, data)
         else:
             self.handle_default(target, subtype, data)
