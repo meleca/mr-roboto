@@ -127,7 +127,14 @@ class Behaviors(object):
         """
         # MIME Type Handling functions
         def handle_text(target, subtype, data, charset):
-            content = str(data, encoding=charset)
+            try:
+                content = str(data, encoding=charset)
+            except UnicodeDecodeError as e:
+                # It's still possible that part of the site processing changes
+                # the encoding (i.e. ascii animations). Hence we try to find the
+                # title within the range with correct charset
+                content = str(data[:e.end-1], encoding=charset)
+
             page = html.fromstring(content)
             title = page.findtext('.//title')
 
