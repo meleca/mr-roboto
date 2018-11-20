@@ -111,23 +111,17 @@ class Commands(object):
             %%greeting <nick> <message>...
         """
         try:
-            # create greetings key for channel plus nick
+            table = self.bot.dataset['greetings']
             channel = target.replace('#', '')
             nick = args['<nick>'].lower()
-            key = 'greetings:%s:%s' % (channel, nick)
-
-            # prepare greeting message
             message = ' '.join(args['<message>'])
-
-            self.bot.db.SIGINT()
-
-            # update Redis record for this key
-            greeting_list = self.bot.db.get(key)
-            if greeting_list is None:
-                greeting_list = dict(greetings=message)
-            else:
-                greeting_list['greetings'] += '\n' + message
-            self.bot.db[key] = greeting_list
+            result = table.find_one(channel=channel, nick=nick) or {}
+            options = '\n'.join([result.get('options', ''), message])
+            table.upsert({
+                'channel': channel,
+                'nick': nick,
+                'options': options,
+            }, ['channel', 'nick'])
 
             return 'Okie dokie'
         except Exception as e:

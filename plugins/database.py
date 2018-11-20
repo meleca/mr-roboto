@@ -22,4 +22,9 @@ class Database(object):
             context (irc3.IrcBot): The running IrcBot instance.
         """
         self.context = context
-        self.context.db = dataset.connect(self.context.config.database)
+        self.context.dataset = dataset.connect(self.context.config.database)
+
+    @classmethod
+    def reload(cls, old):
+        print("reloading plugin {}".format(cls.__name__))
+        return cls(old.context)

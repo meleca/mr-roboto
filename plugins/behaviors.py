@@ -80,22 +80,14 @@ class Behaviors(object):
             Say hi for everyone who join the channel
         """
         if self.bot.nick != mask.nick:
-            # initialize greeting message
             message = '%s: Hi!' % mask.nick
+            channel = channel.replace('#', '')
+            nick = mask.nick.lower()
+            table = self.bot.dataset['greetings']
+            result = table.find_one(channel=channel, nick=nick) or {}
 
-            # them create Redis key that should store
-            # greetings for these nick and channel
-            key = 'greetings:%s:%s' % (
-                channel.replace('#', ''),
-                mask.nick.lower())
-
-            # if there was at least one greeting use
-            # these instead default message
-            self.bot.db.SIGINT()
-            greetings = self.bot.db.get(key)
-
-            if greetings is not None:
-                greeting = random.choice(greetings['greetings'].splitlines())
+            if result.get('options', ''):
+                greeting = random.choice(result['options'].splitlines())
                 message = '%s: %s' % (mask.nick, greeting)
 
             self.bot.privmsg(channel, message)
