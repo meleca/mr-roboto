@@ -8,16 +8,17 @@ from lxml import html
 import aiohttp
 import random
 import re
+from . import BasePlugin
 
 
 @plugin
-class Behaviors(object):
+class Behaviors(BasePlugin):
     """
-        Defines bot's behavior by scheduling actions or handling channel events
+        Defines bot's behavior by scheduling
+        actions or handling channel events.
     """
-
     def __init__(self, bot):
-        self.bot = bot
+        super(Behaviors, self).__init__(bot)
 
         # List of rules for channel messages
         # Each item has a tuple containing an RE and a reference to the
@@ -25,11 +26,6 @@ class Behaviors(object):
         self.channel_rules = self.compile_rules([
             ('(https?://[^ \t>\n\r\x01-\x1f]+)', self.handle_url),
         ])
-
-    @classmethod
-    def reload(cls, old):
-        print("reloading plugin {}".format(cls.__name__))
-        return cls(old.bot)
 
     def compile_rules(self, rules):
         """
@@ -80,22 +76,14 @@ class Behaviors(object):
             Say hi for everyone who join the channel
         """
         if self.bot.nick != mask.nick:
-            # initialize greeting message
             message = '%s: Hi!' % mask.nick
+            channel = channel.replace('#', '')
+            nick = mask.nick.lower()
+            table = self.bot.dataset['greetings']
+            result = table.find_one(channel=channel, nick=nick) or {}
 
-            # them create Redis key that should store
-            # greetings for these nick and channel
-            key = 'greetings:%s:%s' % (
-                channel.replace('#', ''),
-                mask.nick.lower())
-
-            # if there was at least one greeting use
-            # these instead default message
-            self.bot.db.SIGINT()
-            greetings = self.bot.db.get(key)
-
-            if greetings is not None:
-                greeting = random.choice(greetings['greetings'].splitlines())
+            if result.get('options', ''):
+                greeting = random.choice(result['options'].splitlines())
                 message = '%s: %s' % (mask.nick, greeting)
 
             self.bot.privmsg(channel, message)

@@ -12,6 +12,8 @@ lxml = "*"
 aiohttp = "*"
 aiocron = "*"
 watchdog = "*"
+dataset = "*"
+alembic = "*"
 
 [requires]
 python_version = "3.7"
