@@ -9,6 +9,7 @@ import aiohttp
 import random
 import re
 from . import BasePlugin
+from datetime import datetime
 
 
 @plugin
@@ -113,6 +114,8 @@ class Behaviors(BasePlugin):
             Load URL address and send its web page title back to the
             channel
         """
+        history = {'url': url, 'title': '', 'datetime': datetime.utcnow()}
+
         # MIME Type Handling functions
         def handle_text(target, subtype, data, charset):
             try:
@@ -126,8 +129,9 @@ class Behaviors(BasePlugin):
             page = html.fromstring(content)
             title = page.findtext('.//title')
 
-            if title is not None:
-                self.bot.privmsg(target, ('[%s]' % title.strip()))
+            if title:
+                history['title'] = title.strip()
+                self.bot.privmsg(target, ('[%s]' % history['title']))
 
         def handle_image(target, subtype, data):
             self.bot.privmsg(target, 'Looks like an image')
@@ -153,7 +157,7 @@ class Behaviors(BasePlugin):
         async with aiohttp.ClientSession() as session:
             async with session.get(url.decode('utf-8')) as request:
                 # Extract mime type
-                rule = re.compile('^(\w+)/([\w\-\+]+)( *;.*)?$')
+                rule = re.compile(r'^(\w+)/([\w\-\+]+)( *;.*)?$')
                 match = rule.search(request.headers['CONTENT-TYPE'])
                 if not match:
                     self.bot.privmsg(
@@ -175,3 +179,7 @@ class Behaviors(BasePlugin):
                 type_handlers[mime_type](target, subtype, data)
         else:
             self.handle_default(target, subtype, data)
+
+        # Save URL history
+        table = self.bot.dataset['url_history']
+        table.upsert(history, ['url'])
