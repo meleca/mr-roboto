@@ -4,27 +4,23 @@
 """
 import dataset
 from irc3 import plugin
+from . import BasePlugin
 
 
 @plugin
-class Database(object):
+class Database(BasePlugin):
     """
-    Interface to access bot's database.
+        Interface to access bot's database.
 
-    For usage take a look at dataset documentation.
-    For database support take a look at SQLAlchemy documentation.
+        For usage take a look at dataset documentation.
+        For database support take a look at SQLAlchemy documentation.
     """
-    def __init__(self, context):
+    def __init__(self, bot):
         """
-        Initializes database plugin.
+            Initializes database plugin.
 
-        Args:
-            context (irc3.IrcBot): The running IrcBot instance.
+            Args:
+                bot (irc3.IrcBot): The running IrcBot instance.
         """
-        self.context = context
-        self.context.dataset = dataset.connect(self.context.config.database)
-
-    @classmethod
-    def reload(cls, old):
-        print("reloading plugin {}".format(cls.__name__))
-        return cls(old.context)
+        super(Database, self).__init__(bot)
+        self.bot.dataset = dataset.connect(self.bot.config.database)

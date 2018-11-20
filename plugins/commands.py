@@ -8,21 +8,16 @@ import aiohttp
 import re
 import random
 import json
+from . import BasePlugin
 
 
 @plugin
-class Commands(object):
+class Commands(BasePlugin):
     """
-        Handle commands called by users
+        Handle commands called by users.
     """
-
     def __init__(self, bot):
-        self.bot = bot
-
-    @classmethod
-    def reload(cls, old):
-        print("reloading plugin {}".format(cls.__name__))
-        return cls(old.bot)
+        super(Commands, self).__init__(bot)
 
     @command(permission='view')
     async def commit(self, mask, target, args):

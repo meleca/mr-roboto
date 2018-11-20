@@ -8,16 +8,17 @@ from lxml import html
 import aiohttp
 import random
 import re
+from . import BasePlugin
 
 
 @plugin
-class Behaviors(object):
+class Behaviors(BasePlugin):
     """
-        Defines bot's behavior by scheduling actions or handling channel events
+        Defines bot's behavior by scheduling
+        actions or handling channel events.
     """
-
     def __init__(self, bot):
-        self.bot = bot
+        super(Behaviors, self).__init__(bot)
 
         # List of rules for channel messages
         # Each item has a tuple containing an RE and a reference to the
@@ -25,11 +26,6 @@ class Behaviors(object):
         self.channel_rules = self.compile_rules([
             ('(https?://[^ \t>\n\r\x01-\x1f]+)', self.handle_url),
         ])
-
-    @classmethod
-    def reload(cls, old):
-        print("reloading plugin {}".format(cls.__name__))
-        return cls(old.bot)
 
     def compile_rules(self, rules):
         """
