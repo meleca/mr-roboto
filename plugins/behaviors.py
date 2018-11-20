@@ -114,7 +114,12 @@ class Behaviors(BasePlugin):
             Load URL address and send its web page title back to the
             channel
         """
-        history = {'url': url, 'title': '', 'datetime': datetime.utcnow()}
+        history = {
+            'channel': target.replace('#', ''),
+            'url': url,
+            'title': '',
+            'datetime': datetime.utcnow()
+        }
 
         # MIME Type Handling functions
         def handle_text(target, subtype, data, charset):
@@ -182,4 +187,4 @@ class Behaviors(BasePlugin):
 
         # Save URL history
         table = self.bot.dataset['url_history']
-        table.upsert(history, ['url'])
+        table.upsert(history, ['channel', 'url'])

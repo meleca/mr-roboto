@@ -21,6 +21,7 @@ def upgrade():
     op.create_table(
         'url_history',
         sa.Column('id', sa.Integer, primary_key=True),
+        sa.Column('channel', sa.String(50), nullable=False),
         sa.Column('url', sa.String(200), nullable=False),
         sa.Column('title', sa.Unicode(200)),
         sa.Column('datetime', sa.DateTime, default=datetime.datetime.utcnow)
