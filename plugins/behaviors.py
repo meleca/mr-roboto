@@ -122,14 +122,21 @@ class Behaviors(BasePlugin):
         }
 
         # MIME Type Handling functions
-        def handle_text(target, subtype, data, charset):
+        def handle_text(target, subtype, data, charset='utf-8'):
             try:
                 content = str(data, encoding=charset)
             except UnicodeDecodeError as e:
                 # It's still possible that part of the site processing changes
                 # the encoding (i.e. ascii animations). Hence we try to find the
                 # title within the range with correct charset
-                content = str(data[:e.end-1], encoding=charset)
+                try:
+                    content = str(data[:e.end-1], encoding=charset)
+                except UnicodeDecodeError:
+                    # If it fails again, just forget it and return
+                    self.bot.privmsg(
+                        target,
+                        '... it seems this website has a pretty broken charset')
+                    return
 
             page = html.fromstring(content)
             title = page.findtext('.//title')
@@ -178,7 +185,7 @@ class Behaviors(BasePlugin):
 
         # Handle content
         if mime_type in type_handlers:
-            if mime_type == u'text':
+            if mime_type == u'text' and request.charset:
                 type_handlers[mime_type](target, subtype, data, request.charset)
             else:
                 type_handlers[mime_type](target, subtype, data)
