@@ -116,7 +116,7 @@ class Behaviors(BasePlugin):
         """
         history = {
             'channel': target.replace('#', ''),
-            'url': url,
+            'url': url.decode('utf-8'),
             'title': '',
             'datetime': datetime.utcnow()
         }

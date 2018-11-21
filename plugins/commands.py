@@ -9,6 +9,8 @@ import re
 import random
 import json
 from . import BasePlugin
+from datetime import datetime, timedelta
+from sqlalchemy.sql import or_
 
 
 @plugin
@@ -207,3 +209,70 @@ class Commands(BasePlugin):
                 return response['ellol']
 
         return 'Sorry, something went wlong'
+
+    @command(permission='view')
+    async def urls(self, mask, target, args):
+        """
+            Returns channel URLs history.
+
+            %%urls [<date> [<keyword>...]]
+        """
+        table = self.bot.dataset['url_history'].table
+        statement = table.select().where(
+            table.c.channel == target.replace('#', '')
+        )
+
+        date = (args.get('<date>') or '').lower()
+        if date:
+            # regular expression for ISO dates
+            regex = (
+                r'^([12]\d{3})-(0[1-9]|1[012])-(0[1-9]|[12]\d|3[01])'
+                r'( (0\d|1\d|2[0-3]):(0\d|[1-5]\d)(:(0\d|[1-5]\d))?)?$'
+            )
+
+            # initializes the interval with the current day, aka today :P
+            b = {'hour': 0, 'minute': 0, 'second': 0, 'microsecond': 0}
+            e = {'hour': 23, 'minute': 59, 'second': 59, 'microsecond': 999999}
+            bd = datetime.utcnow()
+            bd = bd.replace(**b)  # begin date
+            ed = bd.replace(**e)  # end date
+
+            if date == 'yesterday':
+                bd -= timedelta(1)
+                ed -= timedelta(1)
+            elif date == 'week':
+                bd -= timedelta(days=bd.weekday())
+            elif date == 'month':
+                bd = bd.replace(day=1)
+            elif re.match(regex, date):
+                try:
+                    bd = datetime.fromisoformat(date)
+                except ValueError:
+                    return 'Invalid date'
+                bd = bd.replace(**b)
+                ed = bd.replace(**e)
+            elif date != 'today':
+                bd, ed = None, None
+
+            if bd and ed:
+                statement = statement.where(
+                    table.c.datetime >= bd
+                ).where(
+                    table.c.datetime <= ed
+                )
+
+        keywords = args.get('<keyword>', [])
+        if keywords:
+            likes = [table.c.title.ilike(f'%{word}%') for word in keywords]
+            statement = statement.where(or_(*likes))
+
+        statement = statement.order_by(-table.c.datetime).limit(5)
+        result = self.bot.dataset.query(statement)
+
+        for item in result:
+            msg = '%s %s [%s]' % (
+                item.get('datetime').strftime('%Y-%m-%d %H:%M'),
+                item.get('url'),
+                item.get('title', '')
+            )
+            self.bot.privmsg(target, msg)
