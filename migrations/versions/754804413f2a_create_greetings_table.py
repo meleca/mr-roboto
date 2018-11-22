@@ -1,7 +1,7 @@
 """create greetings table
 
 Revision ID: 754804413f2a
-Revises: 
+Revises:
 Create Date: 2018-11-19 17:26:26.139502
 
 """

@@ -5,6 +5,7 @@ from watchdog.events import FileSystemEventHandler
 import sys
 import os
 
+
 class ReloadEventHandler(FileSystemEventHandler):
     def __init__(self, bot, config):
         self.bot = bot
@@ -14,10 +15,11 @@ class ReloadEventHandler(FileSystemEventHandler):
         super(ReloadEventHandler, self).on_modified(event)
 
         if (event.src_path.endswith(".py") and
-            os.path.dirname(event.src_path).endswith("plugins")):
+                os.path.dirname(event.src_path).endswith("plugins")):
             local_plugins = filter(lambda lp: lp.startswith("plugins"),
                                    self.config["includes"])
             self.bot.reload(*local_plugins)
+
 
 def main():
     # parse configs
@@ -37,6 +39,7 @@ def main():
         bot.run(forever=True)
     except KeyboardInterrupt:
         observer.stop()
+
 
 if __name__ == '__main__':
     main()

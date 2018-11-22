@@ -121,7 +121,7 @@ class Commands(BasePlugin):
             }, ['channel', 'nick'])
 
             return 'Okie dokie'
-        except Exception as e:
+        except Exception:
             return 'Sorry, looks like something went wrong :('
 
     @command(permission='view')
@@ -145,7 +145,7 @@ class Commands(BasePlugin):
         subject = None
         if '<subject>' in args and len(args['<subject>']) > 0:
             # Convert subjects to a single lower case string
-            subject_list = [ s.lower() for s in args['<subject>'] ]
+            subject_list = [s.lower() for s in args['<subject>']]
             subject = ' '.join(subject_list)
 
         # Choose one API to request
@@ -166,16 +166,15 @@ class Commands(BasePlugin):
                 async with session.get(url) as response:
                     response = await response.json(content_type=None)
 
-            # There is two different structure possible for the response
-            # one has a 'joke' field at the response root
-            # the other one the 'joke' field is inside an element called 'value'
-            # so we must try both
+            # There is two different structure possible for the response one
+            # has a 'joke' field at the response root the other one the 'joke'
+            # field is inside an element cablled 'value' so we must try both
             if type(response) is dict:
                 if 'joke' in response:
                     return response['joke']
                 elif ('value' in response
-                    and type(response['value']) is dict
-                    and 'joke' in response['value']):
+                      and type(response['value']) is dict
+                      and 'joke' in response['value']):
                     return response['value']['joke']
 
             # No joke? That it is really sad :(
@@ -192,7 +191,6 @@ class Commands(BasePlugin):
 
             %%cebolate <message>...
         """
-        method = 'POST'
         url = 'http://cebolatol.julianofernandes.com.br/api/tlanslate'
         payload = {'message': ' '.join(args['<message>'])}
         headers = {'content-type': 'application/json'}
@@ -200,7 +198,7 @@ class Commands(BasePlugin):
         async with aiohttp.ClientSession() as session:
             async with session.post(url, data=json.dumps(payload),
                                     headers=headers) as response:
-                response = await reponse.json()
+                response = await response.json()
 
         if type(response) is dict:
             if 'phlase' in response:
