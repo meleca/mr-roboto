@@ -80,7 +80,8 @@ class Behaviors(BasePlugin):
             message = '%s: Hi!' % mask.nick
             nick = mask.nick.lower()
             table = self.bot.dataset['greetings']
-            result = table.find_one(channel=channel.replace('#', ''), nick=nick) or {}
+            result = table.find_one(channel=channel.replace('#', ''),
+                                    nick=nick) or {}
 
             if result.get('options', ''):
                 greeting = random.choice(result['options'].splitlines())
@@ -89,7 +90,8 @@ class Behaviors(BasePlugin):
             self.bot.privmsg(channel, message)
 
     @event(rfc.PRIVMSG)
-    async def handle_message(self, mask=None, event=None, target=None, data=None):
+    async def handle_message(self, mask=None, event=None, target=None,
+                             data=None):
         """
             Handle channel messages
         """
@@ -126,15 +128,15 @@ class Behaviors(BasePlugin):
                 content = str(data, encoding=charset)
             except UnicodeDecodeError as e:
                 # It's still possible that part of the site processing changes
-                # the encoding (i.e. ascii animations). Hence we try to find the
-                # title within the range with correct charset
+                # the encoding (i.e. ascii animations). Hence we try to find
+                # the title within the range with correct charset
                 try:
                     content = str(data[:e.end-1], encoding=charset)
                 except UnicodeDecodeError:
                     # If it fails again, just forget it and return
                     self.bot.privmsg(
                         target,
-                        '... it seems this website has a pretty broken charset')
+                        '... it seems this site has a pretty broken charset')
                     return
 
             page = html.fromstring(content)
@@ -185,7 +187,8 @@ class Behaviors(BasePlugin):
         # Handle content
         if mime_type in type_handlers:
             if mime_type == u'text' and request.charset:
-                type_handlers[mime_type](target, subtype, data, request.charset)
+                type_handlers[mime_type](target, subtype, data,
+                                         request.charset)
             else:
                 type_handlers[mime_type](target, subtype, data)
         else:
