@@ -78,10 +78,9 @@ class Behaviors(BasePlugin):
         """
         if self.bot.nick != mask.nick:
             message = '%s: Hi!' % mask.nick
-            channel = channel.replace('#', '')
             nick = mask.nick.lower()
             table = self.bot.dataset['greetings']
-            result = table.find_one(channel=channel, nick=nick) or {}
+            result = table.find_one(channel=channel.replace('#', ''), nick=nick) or {}
 
             if result.get('options', ''):
                 greeting = random.choice(result['options'].splitlines())
