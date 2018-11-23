@@ -4,12 +4,12 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-"flake8" = "*"
+flake8 = "*"
 ipdb = "*"
+appnope = {version = "*", sys_platform = "== 'darwin'"}
 
 [packages]
 irc3 = "*"
-redis = "*"
 lxml = "*"
 aiohttp = "*"
 aiocron = "*"
