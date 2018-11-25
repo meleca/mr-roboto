@@ -1,0 +1,9 @@
+repos:
+- repo: https://gitlab.com/pycqa/flake8
+  # point to the patch that added hook support, since
+  # latest release (3.6.0) doesn't have support yet
+  rev: 93ad9617b0a192836cbc9a591b5abe74e2c85ba7
+  hooks:
+    - id: flake8
+      name: flake8 compliance
+
