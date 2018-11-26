@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-    Bot commands
-"""
 from irc3 import plugin
 from irc3.plugins.command import command
 import aiohttp
@@ -15,18 +11,20 @@ from sqlalchemy.sql import or_
 
 @plugin
 class Commands(BasePlugin):
-    """
-        Handle commands called by users.
-    """
+    """Bot commands."""
     def __init__(self, bot):
+        """Initializes commands plugin.
+
+        Args:
+            bot: The running IrcBot instance.
+        """
         super(Commands, self).__init__(bot)
 
     @command(permission='view')
     async def commit(self, mask, target, args):
-        """
-            Prints Commit Messages
+        """Prints commit messages.
 
-            %%commit
+        %%commit
         """
         url = "http://whatthecommit.com/index.txt"
         async with aiohttp.ClientSession() as session:
@@ -35,10 +33,9 @@ class Commands(BasePlugin):
 
     @command(permission='view')
     async def excuse(self, mask, target, args):
-        """
-            Prints Programmer Excuses
+        """Prints programmers excuses.
 
-            %%excuse
+        %%excuse
         """
         url = "https://api.githunt.io/programmingexcuses"
         async with aiohttp.ClientSession() as session:
@@ -47,15 +44,11 @@ class Commands(BasePlugin):
 
     @command(permission='view')
     async def horoscope(self, mask, target, args):
-        """
-            Prints daily horoscope (pt_br only)
+        """Prints daily horoscope (pt_br only).
 
-            %%horoscope <zodiac>
+        %%horoscope <zodiac>
         """
         wished = args['<zodiac>']
-
-        # list of zodiacs and a regular expression matching its names
-        # this will be used to identify what zodiac user is looking for
         zodiac_table = {
             u'\u00c1ries': u'[A\u00c1a\u00e1]ries',
             u'Touro': u'[Tt]ouro',
@@ -70,11 +63,7 @@ class Commands(BasePlugin):
             u'Aqu\u00e1rio': u'[Aa]qu[\u00e1a]rio',
             u'Peixes': u'[Pp]eixes'
         }
-
-        # default answer
         msg = 'Os astros parecem confusos, e eu mais ainda'
-
-        # the horoscopo API service provides daily information about horoscope
         url = "http://developers.agenciaideias.com.br/horoscopo/json"
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:
@@ -102,10 +91,9 @@ class Commands(BasePlugin):
 
     @command(permission='admin')
     async def greeting(self, mask, target, args):
-        """
-            Save new greeting message to a specific nick
+        """Saves a new greeting message to a specific nick.
 
-            %%greeting <nick> <message>...
+        %%greeting <nick> <message>...
         """
         try:
             table = self.bot.dataset['greetings']
@@ -126,39 +114,28 @@ class Commands(BasePlugin):
 
     @command(permission='view')
     async def joke(self, mask, target, args):
-        """
-            Prints a Joke.
-            You can also pass a subject for an especific kind of joke.
-            The available subjects are:
-                chuck norris,
-                yo momma
+        """Prints a Joke.
 
-            %%joke [<subject>...]
+        You can also pass a subject for an especific kind of joke.
+        The available subjects are: 'chuck norris', and 'yo momma'
+
+        %%joke [<subject>...]
         """
-        # List of available APIs
         jokes_api = {
             'icndb': 'http://api.icndb.com/jokes/random?escape=javascript',
             'yomomma': 'http://api.yomomma.info/',
         }
-
-        # Check if there is some subject
         subject = None
         if '<subject>' in args and len(args['<subject>']) > 0:
-            # Convert subjects to a single lower case string
             subject_list = [s.lower() for s in args['<subject>']]
             subject = ' '.join(subject_list)
-
-        # Choose one API to request
         url = None
 
         if subject == 'chuck norris':
-            # Pick one from icndb API
             url = jokes_api['icndb']
         elif subject == 'yo momma':
-            # Pick one from yo momma API
             url = jokes_api['yomomma']
         else:
-            # Pick a random source
             url = random.choice(list(jokes_api.values()))
 
         try:
@@ -166,9 +143,11 @@ class Commands(BasePlugin):
                 async with session.get(url) as response:
                     response = await response.json(content_type=None)
 
-            # There is two different structure possible for the response one
-            # has a 'joke' field at the response root the other one the 'joke'
-            # field is inside an element cablled 'value' so we must try both
+            # There are two different possible structures for the
+            # response, one has a `joke` field at the response root,
+            # and the other one has the `joke` field inside an element
+            # cablled `value`, so we must try both in order to
+            # reach the text.
             if type(response) is dict:
                 if 'joke' in response:
                     return response['joke']
@@ -186,10 +165,9 @@ class Commands(BasePlugin):
 
     @command(permission='view')
     async def cebolate(self, mask, target, args):
-        """
-            Prints message translated to Cebolinha's dialect
+        """Prints message translated to Cebolinha's dialect.
 
-            %%cebolate <message>...
+        %%cebolate <message>...
         """
         url = 'http://cebolatol.julianofernandes.com.br/api/tlanslate'
         payload = {'message': ' '.join(args['<message>'])}
@@ -210,10 +188,17 @@ class Commands(BasePlugin):
 
     @command(permission='view')
     async def urls(self, mask, target, args):
-        """
-            Returns channel URLs history.
+        """Returns channel URLs history.
 
-            %%urls [<date> [<keyword>...]]
+        There are two arguments available for filtering.
+
+        date: It can be today, yesterday, week, month
+        or an ISO date (YYYY-mm-dd).
+
+        keyword: Any word present in the page title
+        you are looking for.
+
+        %%urls [<date> [<keyword>...]]
         """
         table = self.bot.dataset['url_history'].table
         statement = table.select().where(

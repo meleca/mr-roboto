@@ -1,16 +1,13 @@
-"""create url_history table
+"""Creates url_history table.
 
 Revision ID: 56fab68d28b9
 Revises: 754804413f2a
 Create Date: 2018-11-20 11:46:09.340369
-
 """
 from alembic import op
 import sqlalchemy as sa
 import datetime
 
-
-# revision identifiers, used by Alembic.
 revision = '56fab68d28b9'
 down_revision = '754804413f2a'
 branch_labels = None

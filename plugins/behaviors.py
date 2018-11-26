@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-    Bot behavior
-"""
 from irc3 import plugin, event, rfc
 from irc3.plugins.cron import cron
 from lxml import html
@@ -14,24 +10,35 @@ from datetime import datetime
 
 @plugin
 class Behaviors(BasePlugin):
-    """
-        Defines bot's behavior by scheduling
-        actions or handling channel events.
+    """Bot behavior.
+
+    Defines bot's behavior by scheduling actions
+    or handling channel events.
     """
     def __init__(self, bot):
+        """Initializes behavior plugin.
+
+        Args:
+            bot: The running IrcBot instance.
+        """
         super(Behaviors, self).__init__(bot)
 
-        # List of rules for channel messages
-        # Each item has a tuple containing an RE and a reference to the
-        # procedure to be executed
-        self.channel_rules = self.compile_rules([
+        # List of rules for channel's messages.
+        # Each item has a tuple containing
+        # an RE and a reference to the
+        # method to be executed.
+        self.channel_rules = self._compile_rules([
             ('(https?://[^ \t>\n\r\x01-\x1f]+)', self.handle_url),
         ])
 
-    def compile_rules(self, rules):
-        """
-            Compile a list of RE and return a new list with
-            each RE compiled and its procedure reference
+    def _compile_rules(self, rules):
+        """Plugin rules compiler.
+
+        Compiles a list of RE and return a new list with
+        each RE compiled and its method reference.
+
+        Args:
+            rules: List of rules for channel's messages.
         """
         if type(rules) is list:
             return [(re.compile(rule, re.UNICODE), func)
@@ -39,12 +46,11 @@ class Behaviors(BasePlugin):
         else:
             return None
 
-    # Here we can schedule something to be said or made in a specific time
-
-    @cron('0 9 * * 1-5')
+    @cron('0 9 * * 1-5')  # week-days 9am
     def good_morning(self):
-        """
-            Says something in the morning at work days
+        """Says something in the morning.
+
+        Automatic sends a random message every week day 9am.
         """
         feeling_sleepy = [
             'Good morning',
@@ -58,10 +64,11 @@ class Behaviors(BasePlugin):
         for channel in list(self.bot.channels):
             self.bot.privmsg(channel, to_say)
 
-    @cron('0 12 * * 1-5')
+    @cron('0 12 * * 1-5')  # week-days 12pm
     def lunch_time(self):
-        """
-            Say something at 12 am at work days
+        """Say something at noon.
+
+        Automatic sends a random message every week day 12pm.
         """
         feeling_hungry = ['Lunch time', 'I\'m gonna get something to eat']
         to_say = random.choice(feeling_hungry)
@@ -69,12 +76,13 @@ class Behaviors(BasePlugin):
         for channel in list(self.bot.channels):
             self.bot.privmsg(channel, to_say)
 
-    # Here we can handle channel events to trigger something to be said or made
-
     @event(rfc.JOIN)
     def say_hi(self, mask=None, channel=None):
-        """
-            Say hi for everyone who join the channel
+        """Greets everyone who joins the channel.
+
+        Args:
+            mask: An IrcString containing useful information.
+            channel: Channel name.
         """
         if self.bot.nick != mask.nick:
             message = '%s: Hi!' % mask.nick
@@ -92,15 +100,19 @@ class Behaviors(BasePlugin):
     @event(rfc.PRIVMSG)
     async def handle_message(self, mask=None, event=None, target=None,
                              data=None):
-        """
-            Handle channel messages
+        """Handles channel's messages.
+
+        Args:
+            mask: An IrcString containing useful information.
+            event: The IRC event, it can be PRIVMSG or NOTICE.
+            target: Channel name.
+            data: The message sent to the channel.
         """
         if self.channel_rules and type(self.channel_rules) is list:
 
             try:
-                # Check channel rules looking for some nice interaction
-                # If at least one rule match with the channel message execute
-                # it's callback
+                # Verifies if any rule match with the given text message,
+                # if it does, executes its callback.
                 for rule, func in self.channel_rules:
                     match = rule.search(data)
                     if match:
@@ -111,9 +123,16 @@ class Behaviors(BasePlugin):
                 self.bot.privmsg(target, 'Booom shakalaka')
 
     async def handle_url(self, target, url):
-        """
-            Load URL address and send its web page title back to the
-            channel
+        """Handler for URLs.
+
+        Attempts to load the URL address, if no problem occur
+        it checks the response in order to validate its type
+        and send the page title back to the channel if available.
+        At the end updates the URLs history.
+
+        Args:
+            target: Channel name.
+            url: A valid URL.
         """
         history = {
             'channel': target.replace('#', ''),
@@ -122,18 +141,17 @@ class Behaviors(BasePlugin):
             'datetime': datetime.utcnow()
         }
 
-        # MIME Type Handling functions
         def handle_text(target, subtype, data, charset='utf-8'):
             try:
                 content = str(data, encoding=charset)
             except UnicodeDecodeError as e:
                 # It's still possible that part of the site processing changes
                 # the encoding (i.e. ascii animations). Hence we try to find
-                # the title within the range with correct charset
+                # the title within the range with correct charset.
                 try:
                     content = str(data[:e.end-1], encoding=charset)
                 except UnicodeDecodeError:
-                    # If it fails again, just forget it and return
+                    # If it fails again, just forget it and return.
                     self.bot.privmsg(
                         target,
                         '... it seems this site has a pretty broken charset')
@@ -158,7 +176,6 @@ class Behaviors(BasePlugin):
         def handle_default(target, subtype, data):
             self.bot.privmsg(target, 'What kind of weed is that?')
 
-        # MIME Type dict
         type_handlers = {
             u'text': handle_text,
             u'image': handle_image,
@@ -166,10 +183,9 @@ class Behaviors(BasePlugin):
             u'video': handle_video
         }
 
-        # First of all load the page
         async with aiohttp.ClientSession() as session:
             async with session.get(url.decode('utf-8')) as request:
-                # Extract mime type
+                # Extract mime type.
                 rule = re.compile(r'^(\w+)/([\w\-\+]+)( *;.*)?$')
                 match = rule.search(request.headers['CONTENT-TYPE'])
                 if not match:
@@ -180,11 +196,8 @@ class Behaviors(BasePlugin):
 
                 mime_type = match.group(1)
                 subtype = match.group(2)
-
-                # Then parses its HTML and search for the title
                 data = await request.read()
 
-        # Handle content
         if mime_type in type_handlers:
             if mime_type == u'text' and request.charset:
                 type_handlers[mime_type](target, subtype, data,
@@ -194,6 +207,5 @@ class Behaviors(BasePlugin):
         else:
             self.handle_default(target, subtype, data)
 
-        # Save URL history
         table = self.bot.dataset['url_history']
         table.upsert(history, ['channel', 'url'])
