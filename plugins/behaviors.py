@@ -28,7 +28,7 @@ class Behaviors(BasePlugin):
         # an RE and a reference to the
         # method to be executed.
         self.channel_rules = self._compile_rules([
-            ('(https?://[^ \t>\n\r\x01-\x1f]+)', self.handle_url),
+            (r'(https?://[^ \t>\n\r\x01-\x1f]+)', self.handle_url),
         ])
 
     def _compile_rules(self, rules):

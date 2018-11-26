@@ -26,7 +26,7 @@ class Commands(BasePlugin):
 
         %%commit
         """
-        url = "http://whatthecommit.com/index.txt"
+        url = 'http://whatthecommit.com/index.txt'
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:
                 return await response.text()
@@ -37,7 +37,7 @@ class Commands(BasePlugin):
 
         %%excuse
         """
-        url = "https://api.githunt.io/programmingexcuses"
+        url = 'https://api.githunt.io/programmingexcuses'
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:
                 return await response.text()
@@ -64,7 +64,7 @@ class Commands(BasePlugin):
             u'Peixes': u'[Pp]eixes'
         }
         msg = 'Os astros parecem confusos, e eu mais ainda'
-        url = "http://developers.agenciaideias.com.br/horoscopo/json"
+        url = 'http://developers.agenciaideias.com.br/horoscopo/json'
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:
                 response = await response.json(content_type=None)
