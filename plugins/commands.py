@@ -76,7 +76,7 @@ class Commands(BasePlugin):
                     the_one = zodiac_name
                     break
             if not the_one:
-                return (u'%s n\u00e3o consta nos meus mapas astrais' % wished)
+                return (f'{wished} n\u00e3o consta nos meus mapas astrais')
             else:
                 for zodiac in response['signos']:
                     if zodiac['nome'] == the_one:
@@ -253,9 +253,8 @@ class Commands(BasePlugin):
         result = self.bot.dataset.query(statement)
 
         for item in result:
-            msg = '%s %s [%s]' % (
-                item.get('datetime').strftime('%Y-%m-%d %H:%M'),
-                item.get('url'),
-                item.get('title', '')
-            )
+            _dt = item.get('datetime').strftime('%Y-%m-%d')
+            _url = item.get('url')
+            _title = item.get('title', '')
+            msg = f'{_dt} {_url} [{_title}]'
             self.bot.privmsg(target, msg)

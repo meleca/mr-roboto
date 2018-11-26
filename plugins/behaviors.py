@@ -85,7 +85,7 @@ class Behaviors(BasePlugin):
             channel: Channel name.
         """
         if self.bot.nick != mask.nick:
-            message = '%s: Hi!' % mask.nick
+            message = f'{mask.nick}: Hi!'
             nick = mask.nick.lower()
             table = self.bot.dataset['greetings']
             result = table.find_one(channel=channel.replace('#', ''),
@@ -93,7 +93,7 @@ class Behaviors(BasePlugin):
 
             if result.get('options', ''):
                 greeting = random.choice(result['options'].splitlines())
-                message = '%s: %s' % (mask.nick, greeting)
+                message = f'{mask.nick}: {greeting}'
 
             self.bot.privmsg(channel, message)
 
@@ -162,7 +162,7 @@ class Behaviors(BasePlugin):
 
             if title:
                 history['title'] = title.strip()
-                self.bot.privmsg(target, ('[%s]' % history['title']))
+                self.bot.privmsg(target, f'[{history.get("title")}]')
 
         def handle_image(target, subtype, data):
             self.bot.privmsg(target, 'Looks like an image')
