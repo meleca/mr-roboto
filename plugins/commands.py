@@ -36,10 +36,14 @@ class Commands(BasePlugin):
 
         %%excuse
         """
-        url = 'https://api.githunt.io/programmingexcuses'
+        url = 'http://programmingexcuses.com'
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:
-                return await response.text()
+                response = await response.text()
+
+        if response:
+            # Extracts the message from the HTML document.
+            return re.sub(r'(^[\w\W]*<a .*?>|</a>[\w\W]*$)', '', response)
 
     @command(permission='view')
     async def horoscope(self, mask, target, args):
