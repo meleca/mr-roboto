@@ -44,49 +44,33 @@ class Commands(BasePlugin):
 
     @command(permission='view')
     async def horoscope(self, mask, target, args):
-        """Prints daily horoscope (pt_br only).
+        """Prints daily horoscope.
 
-        %%horoscope <zodiac>
+        Signs: Aquarius, Aries, Cancer, Capricorn, Gemini,
+        Leo, Libra, Pisces, Sagittarius, Scorpio, Taurus, Virgo.
+
+
+        %%horoscope <sign>
         """
-        wished = args['<zodiac>']
-        zodiac_table = {
-            u'\u00c1ries': u'[A\u00c1a\u00e1]ries',
-            u'Touro': u'[Tt]ouro',
-            u'G\u00eameos': u'[Gg][\u00eae]meos',
-            u'C\u00e2ncer': u'[Cc][\u00e2a]ncer',
-            u'Le\u00e3o': u'[Ll]e[\u00e3a]o',
-            u'Virgem': u'[Vv]irgem',
-            u'Libra': u'[Ll]ibra',
-            u'Escorpi\u00e3o': u'[Ee]scorpi[\u00e3a]o',
-            u'Sagit\u00e1rio': u'[Ss]agit[\u00e1a]rio',
-            u'Capric\u00f3rnio': u'[Cc]apric[\u00f3o]rnio',
-            u'Aqu\u00e1rio': u'[Aa]qu[\u00e1a]rio',
-            u'Peixes': u'[Pp]eixes'
-        }
-        msg = 'Os astros parecem confusos, e eu mais ainda'
-        url = 'http://developers.agenciaideias.com.br/horoscopo/json'
+        zodiac_signs = [
+            'Aquarius', 'Aries', 'Cancer', 'Capricorn', 'Gemini', 'Leo',
+            'Libra', 'Pisces', 'Sagittarius', 'Scorpio', 'Taurus', 'Virgo'
+        ]
+        wished = (args.get('<sign>') or '').capitalize()
+        if wished not in zodiac_signs:
+            return f'{wished} is not a valid sign.'
+
+        url = f'http://horoscope-api.herokuapp.com/horoscope/today/{wished}'
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:
-                response = await response.json(content_type=None)
+                response = await response.json()
 
-        if response and 'signos' in response:
-            the_one = None
-            for zodiac_name, zodiac_regex in zodiac_table.items():
-                if re.match(zodiac_regex, wished):
-                    the_one = zodiac_name
-                    break
-            if not the_one:
-                return (f'{wished} n\u00e3o consta nos meus mapas astrais')
-            else:
-                for zodiac in response['signos']:
-                    if zodiac['nome'] == the_one:
-                        zmsg = zodiac['msg']
-                        zmsg = zmsg.replace('\r', '')
-                        zmsg = zmsg.replace('\n', '')
-                        zmsg = zmsg.replace('\t', '')
-                        if zmsg:
-                            msg = zmsg
-                        break
+        msg = 'I\'m sorry but the stars seems to be unreachable.'
+        if response:
+            horoscope = response.get('horoscope', '')
+            if horoscope:
+                msg = horoscope
+
         return msg
 
     @command(permission='admin')
