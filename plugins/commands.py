@@ -3,7 +3,6 @@ from irc3.plugins.command import command
 import aiohttp
 import re
 import random
-import json
 from . import BasePlugin
 from datetime import datetime, timedelta
 from sqlalchemy.sql import or_
@@ -153,22 +152,9 @@ class Commands(BasePlugin):
 
         %%cebolate <message>...
         """
-        url = 'http://cebolatol.julianofernandes.com.br/api/tlanslate'
-        payload = {'message': ' '.join(args['<message>'])}
-        headers = {'content-type': 'application/json'}
-
-        async with aiohttp.ClientSession() as session:
-            async with session.post(url, data=json.dumps(payload),
-                                    headers=headers) as response:
-                response = await response.json()
-
-        if type(response) is dict:
-            if 'phlase' in response:
-                return response['phlase']
-            elif 'ellol' in response:
-                return response['ellol']
-
-        return 'Sorry, something went wlong'
+        msg = ' '.join((args.get('<message>') or [])).strip()
+        if msg:
+            return msg.replace('R', 'L').replace('r', 'l')
 
     @command(permission='view')
     async def urls(self, mask, target, args):
