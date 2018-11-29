@@ -4,7 +4,7 @@ from lxml import html
 import aiohttp
 import random
 import re
-from . import BasePlugin
+from plugins.baseplugin import BasePlugin
 from datetime import datetime
 
 
