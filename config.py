@@ -12,11 +12,11 @@ class Config(utils.Config):
         """Initializes configuration settings."""
         super(Config, self).__init__(*args, **kwargs)
         self.update(**{
-            'host': config('HOST', default='localhost'),
-            'port': config('PORT', default=6667, cast=int),
-            'nick': config('NICK', default='mybot'),
-            'username': config('USERNAME', default='mybot'),
-            'autojoins': config('AUTOJOINS', default='', cast=Csv()),
+            'host': config('IRC_HOST', default='localhost'),
+            'port': config('IRC_PORT', default=6667, cast=int),
+            'nick': config('IRC_NICK', default='mybot'),
+            'username': config('IRC_USERNAME', default='mybot'),
+            'autojoins': config('IRC_AUTOJOINS', default='', cast=Csv()),
             'database': config('DATABASE_URL', default='sqlite:///:memory:'),
             'includes': [
                 'irc3.plugins.command',
@@ -39,19 +39,19 @@ class Config(utils.Config):
         # Loads optional configurations.
         optional = {}
 
-        ssl = config('SSL', default=False, cast=bool)
+        ssl = config('IRC_SSL', default=False, cast=bool)
         if ssl:
             optional['ssl'] = ssl
 
-        ssl_verify = config('SSL_VERIFY', default='')
+        ssl_verify = config('IRC_SSL_VERIFY', default='')
         if ssl_verify:
             optional['ssl_verify'] = ssl_verify
 
-        sasl_username = config('SASL_USERNAME', default='')
+        sasl_username = config('IRC_SASL_USERNAME', default='')
         if sasl_username:
             optional['sasl_username'] = sasl_username
 
-        sasl_password = config('SASL_PASSWORD', default='')
+        sasl_password = config('IRC_SASL_PASSWORD', default='')
         if sasl_password:
             optional['sasl_password'] = sasl_password
 
@@ -60,7 +60,7 @@ class Config(utils.Config):
         # For the admin list it is necessary
         # to convert nicknames into masks
         # and add one by one to a sub-dict.
-        admins = config('ADMINS', default='', cast=Csv())
+        admins = config('IRC_ADMINS', default='', cast=Csv())
         admkey = 'irc3.plugins.command.masks'
         if admins:
             for admin in admins:
