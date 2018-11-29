@@ -8,6 +8,8 @@ flake8 = "*"
 ipdb = "*"
 appnope = {version = "*", sys_platform = "== 'darwin'"}
 pre-commit = "*"
+pytest = "*"
+pytest-cov = "*"
 
 [packages]
 irc3 = "*"
