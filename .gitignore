@@ -63,5 +63,8 @@ target/
 # Ignore local database files
 *.db
 
+# Ignore local settings
+settings.ini
+
 # Ignore local env files
 .env

@@ -1,3 +1,4 @@
+from os import path
 from irc3 import utils
 from decouple import config, Csv
 
@@ -5,57 +6,43 @@ from decouple import config, Csv
 class Config(utils.Config):
     """Configuration settings.
 
-    All user defined configurations are
-    loaded from environment variables.
+    All user defined configurations are loaded from
+    local settings file and environment variables.
     """
     def __init__(self, *args, **kwargs):
         """Initializes configuration settings."""
         super(Config, self).__init__(*args, **kwargs)
-        self.update(**{
-            'host': config('IRC_HOST', default='localhost'),
-            'port': config('IRC_PORT', default=6667, cast=int),
-            'nick': config('IRC_NICK', default='mybot'),
-            'username': config('IRC_USERNAME', default='mybot'),
-            'autojoins': config('IRC_AUTOJOINS', default='', cast=Csv()),
-            'database': config('DATABASE_URL', default='sqlite:///:memory:'),
-            'includes': [
-                'irc3.plugins.command',
-                'irc3.plugins.log',
-                'irc3.plugins.autojoins',
-                'irc3.plugins.userlist',
-                'plugins.database',
-                'plugins.commands',
-                'plugins.behaviors'
-            ],
-            'irc3.plugins.command': {
-                'cmd': '!',
-                'guard': 'irc3.plugins.command.mask_based_policy'
-            },
-            'irc3.plugins.command.masks': {
-                '*': 'view'
-            }
-        })
 
-        # Loads optional configurations.
-        optional = {}
+        # Always load the default settings.
+        file_name = 'settings.default.ini'
+        file_path = path.dirname(path.abspath(__file__))
+        full_path = path.join(file_path, file_name)
+        base_conf = utils.parse_config('bot', full_path)
+        self.update(**base_conf)
 
-        ssl = config('IRC_SSL', default=False, cast=bool)
-        if ssl:
-            optional['ssl'] = ssl
+        # If there is an user defined settings file.
+        user_path = path.join(file_path, file_name.replace('.default', ''))
+        if path.isfile(user_path):
+            user_conf = utils.parse_config('bot', user_path)
+            self.update(**user_conf)
 
-        ssl_verify = config('IRC_SSL_VERIFY', default='')
-        if ssl_verify:
-            optional['ssl_verify'] = ssl_verify
-
-        sasl_username = config('IRC_SASL_USERNAME', default='')
-        if sasl_username:
-            optional['sasl_username'] = sasl_username
-
-        sasl_password = config('IRC_SASL_PASSWORD', default='')
-        if sasl_password:
-            optional['sasl_password'] = sasl_password
-
-        self.update(**optional)
+        # Override settings using user defined environment variables.
+        env_vars = {key: value for key, value in filter(
+            lambda key_val: key_val[1], [
+                ('host', config('IRC_HOST', default='')),
+                ('port', config('IRC_PORT', default=0, cast=int)),
+                ('nick', config('IRC_NICK', default='')),
+                ('username', config('IRC_USERNAME', default='')),
+                ('password', config('IRC_PASSWORD', default='')),
+                ('autojoins', config('IRC_AUTOJOINS', default='', cast=Csv())),
+                ('database', config('DATABASE_URL', default='')),
+                ('ssl', config('IRC_SSL', default=False, cast=bool)),
+                ('ssl_verify', config('IRC_SSL_VERIFY', default='')),
+                ('sasl_username', config('IRC_SASL_USERNAME', default='')),
+                ('sasl_password', config('IRC_SASL_PASSWORD', default=''))
+            ]
+        )}
+        self.update(**env_vars)
 
         # For the admin list it is necessary
         # to convert nicknames into masks
