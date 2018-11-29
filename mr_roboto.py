@@ -1,8 +1,8 @@
-from irc3 import IrcBot, utils
+from os import path
+from config import conf
+from irc3 import IrcBot
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-import sys
-import os
 
 
 class ReloadEventHandler(FileSystemEventHandler):
@@ -26,7 +26,7 @@ class ReloadEventHandler(FileSystemEventHandler):
         super(ReloadEventHandler, self).on_modified(event)
 
         if (event.src_path.endswith('.py') and
-                os.path.dirname(event.src_path).endswith('plugins')):
+                path.dirname(event.src_path).endswith('plugins')):
             local_plugins = filter(lambda lp: lp.startswith('plugins'),
                                    self.config['includes'])
             self.bot.reload(*local_plugins)
@@ -34,15 +34,14 @@ class ReloadEventHandler(FileSystemEventHandler):
 
 def main():
     """Initializes a new irc3 bot."""
-    if len(sys.argv) != 2:
-        print('Usage: mr_roboto <settings_file>')
-        sys.exit(1)
-    config_path = os.path.abspath(sys.argv[1])
-    config = utils.parse_config('bot', config_path)
-    bot = IrcBot.from_config(config)
+    bot = IrcBot.from_config(conf)
+
     observer = Observer()
-    observer.schedule(ReloadEventHandler(bot, config),
-                      os.path.dirname(config_path), recursive=True)
+    observer.schedule(
+        ReloadEventHandler(bot, conf),
+        path.dirname(path.abspath(__file__)),
+        recursive=True
+    )
     observer.start()
 
     try:
