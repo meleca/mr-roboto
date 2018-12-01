@@ -22,9 +22,9 @@ class Config(utils.Config):
 
         # If there is an user defined settings file.
         user_path = path.join(file_path, file_name.replace('.default', ''))
-        if path.isfile(user_path):
-            user_conf = utils.parse_config('bot', user_path)
-            self.update(**user_conf)
+        user_conf = (utils.parse_config('bot', user_path)
+                     if path.isfile(user_path) else {})
+        self.update(**user_conf)
 
         # Override settings using user defined environment variables.
         env_vars = {key: value for key, value in filter(
