@@ -3,7 +3,7 @@ from irc3.plugins.command import command
 import aiohttp
 import re
 import random
-from . import BasePlugin
+from plugins.baseplugin import BasePlugin
 from datetime import datetime, timedelta
 from sqlalchemy.sql import or_
 

@@ -1,6 +1,6 @@
 import dataset
 from irc3 import plugin
-from . import BasePlugin
+from plugins.baseplugin import BasePlugin
 
 
 @plugin
