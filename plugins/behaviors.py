@@ -145,16 +145,13 @@ class Behaviors(BasePlugin):
             try:
                 content = str(data, encoding=charset)
             except UnicodeDecodeError as e:
-                # It's still possible that part of the site processing changes
-                # the encoding (i.e. ascii animations). Hence we try to find
-                # the title within the range with correct charset.
-                try:
-                    content = str(data[:e.end-1], encoding=charset)
-                except UnicodeDecodeError:
-                    # If it fails again, just forget it and return.
+                data = data[:e.end - 1]
+                if data:
+                    handle_text(target, subtype, data, charset)
+                    return
+                else:
                     self.bot.privmsg(
-                        target,
-                        '... it seems this site has a pretty broken charset')
+                        target, 'It seems this site has a broken charset')
                     return
 
             page = html.fromstring(content)
