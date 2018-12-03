@@ -3,16 +3,15 @@ from plugins.database import Database
 
 
 @mock.patch('plugins.database.dataset')
-def test_database_connection(mock_dataset):
+def test_database_connection(mock_dataset, bot):
     """Tests the initialization of Database plugin.
 
     It creates a database connection using dataset library.
 
     Args:
         mock_dataset: Fakes dataset library.
+        bot: Fake instance of an Irc3Bot.
     """
-    bot = mock.Mock()
-    bot.config = mock.Mock(database='database-url')
     con = mock.Mock()
     mock_dataset.connect.return_value = con
     Database(bot)
