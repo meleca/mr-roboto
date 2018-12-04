@@ -205,7 +205,7 @@ class Behaviors(BasePlugin):
             else:
                 type_handlers[mime_type](target, subtype, data)
         else:
-            self.handle_default(target, subtype, data)
+            handle_default(target, subtype, data)
 
         table = self.bot.dataset['url_history']
         table.upsert(history, ['channel', 'url'])
