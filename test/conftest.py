@@ -17,7 +17,8 @@ def bot():
     mock_bot.config = mock.Mock(database='sqlite:///:memory:')
     mock_bot.channels = ['#meleca']
     tb_greetings = mock.Mock()
+    tb_url_history = mock.Mock()
     tb_greetings.find_one.return_value = {'options': 'Hey there!'}
-    database = {'greetings': tb_greetings}
+    database = {'greetings': tb_greetings, 'url_history': tb_url_history}
     mock_bot.dataset = database
     return mock_bot

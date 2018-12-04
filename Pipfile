@@ -10,6 +10,7 @@ appnope = {version = "*", sys_platform = "== 'darwin'"}
 pre-commit = "*"
 pytest = "*"
 pytest-cov = "*"
+asynctest = "*"
 
 [packages]
 irc3 = "*"
