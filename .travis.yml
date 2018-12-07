@@ -1,0 +1,11 @@
+language: python
+cache: pip
+python:
+  - "3.7"
+install:
+  - pip install pipenv --upgrade
+  - pipenv install --dev
+script:
+  - make test
+after_success:
+  - codecov
