@@ -205,7 +205,8 @@ class Commands(BasePlugin):
                 try:
                     bd = datetime.fromisoformat(date)
                 except ValueError:
-                    return 'Invalid date'
+                    self.bot.privmsg(target, 'Invalid date')
+                    return
                 bd = bd.replace(**b)
                 ed = bd.replace(**e)
             elif date != 'today':
