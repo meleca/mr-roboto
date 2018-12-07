@@ -11,6 +11,7 @@ pre-commit = "*"
 pytest = "*"
 pytest-cov = "*"
 asynctest = "*"
+codecov = "*"
 
 [packages]
 irc3 = "*"
