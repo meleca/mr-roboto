@@ -1,6 +1,8 @@
 # mr_roboto
 A fun IRC bot that help us on work days
 
+[![Build Status](https://travis-ci.org/meleca/mr-roboto.svg?branch=master)](https://travis-ci.org/meleca/mr-roboto) [![codecov](https://codecov.io/gh/meleca/mr-roboto/branch/master/graph/badge.svg)](https://codecov.io/gh/meleca/mr-roboto) [![Updates](https://pyup.io/repos/github/meleca/mr-roboto/shield.svg)](https://pyup.io/repos/github/meleca/mr-roboto/) [![Python 3](https://pyup.io/repos/github/meleca/mr-roboto/python-3-shield.svg)](https://pyup.io/repos/github/meleca/mr-roboto/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # Development
 
 Prior to start the development on mr_roboto it's necessary to follow some steps
