@@ -122,6 +122,8 @@ class Behaviors(BasePlugin):
                 print(e)
                 self.bot.privmsg(target, 'Booom shakalaka')
 
+        await self.slack_meter(target, mask.nick, data)
+
     async def handle_url(self, target, url):
         """Handler for URLs.
 
@@ -206,3 +208,19 @@ class Behaviors(BasePlugin):
 
         table = self.bot.dataset['url_history']
         table.upsert(history, ['channel', 'url'])
+
+    async def slack_meter(self, channel, nick, message):
+        """Updates the slackers rank.
+
+        Args:
+            channel: IRC channel name.
+            nick: A nickname.
+            message: The message sent to the channel.
+        """
+        words = len(message.strip().split())
+        table = self.bot.dataset['slackers']
+        result = table.find_one(channel=channel, nick=nick) or {}
+        counter = result.get('words', 0)
+        counter += words
+        data = {'channel': channel, 'nick': nick, 'words': counter}
+        table.upsert(data, ['channel', 'nick'])
