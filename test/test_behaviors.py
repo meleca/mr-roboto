@@ -63,12 +63,14 @@ def test_behaviors_say_hi(bot):
     assert bot.privmsg.called_once_with(channel, 'mybot: Hey there!')
 
 
-@mock.patch.object(Behaviors, 'handle_url')
-def test_behaviors_handle_message(mock_handle_url, bot):
+@asynctest.patch.object(Behaviors, 'slack_meter')
+@asynctest.patch.object(Behaviors, 'handle_url')
+def test_behaviors_handle_message(mock_handle_url, mock_slack_meter, bot):
     """Tests handle_message method simulating an URL read from channel.
 
     Args:
         mock_handle_url: Fakes Behaviors.handle_url method.
+        mock_slack_meter: Fakes Behaviors.slack_meter method.
         bot: Fake instance of an Irc3Bot.
     """
     mask = IrcString('nickname!@192.168.0.100')
@@ -78,9 +80,11 @@ def test_behaviors_handle_message(mock_handle_url, bot):
     asyncio.get_event_loop().run_until_complete(
         plugin.handle_message(mask=mask, target=channel, data=data))
     assert mock_handle_url.called_once_with(channel, data.encode('utf-8'))
+    assert mock_slack_meter.called_once_with(
+        channel=channel, nick=mask.nick, message=data)
 
 
-@mock.patch.object(Behaviors, 'handle_url')
+@asynctest.patch.object(Behaviors, 'handle_url')
 def test_behaviors_handle_message_raising_exception(mock_handle_url, bot):
     """Tests handle_message method simulating an
     URL read from channel and raising an exception.
@@ -135,3 +139,18 @@ def test_behaviors_handle_url(mock_session_get, header, data, message, bot):
         plugin.handle_url(channel, url))
     assert bot.privmsg.called_once_with(channel, message)
     assert bot.dataset['url_history'].upsert.called_once
+
+
+def test_behaviors_slack_meter(bot):
+    """Tests slack_meter method.
+
+    Args:
+        bot: Fake instance of an Irc3Bot.
+    """
+    channel = IrcString('#meleca')
+    nick = 'somebody'
+    msg = 'Do you think I talk too much?'
+    plugin = Behaviors(bot)
+    asyncio.get_event_loop().run_until_complete(
+        plugin.slack_meter(channel, nick, msg))
+    assert bot.dataset['slackers'].upsert.called_once

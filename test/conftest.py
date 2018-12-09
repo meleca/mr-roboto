@@ -26,7 +26,17 @@ def bot():
     tb_greetings.find_one.return_value = {'options': 'Hey there!'}
     tb_url_history = mock.Mock()
     tb_url_history.table.c.datetime = MockDatetime.utcnow()
-    database = {'greetings': tb_greetings, 'url_history': tb_url_history}
+    tb_slackers = mock.Mock()
+    tb_slackers.find_one.return_value = {'words': 100}
+    tb_slackers.find.return_value = [
+        {'nick': 'somebody', 'words': 10},
+        {'nick': 'somebody_else', 'words': 100}
+    ]
+    database = {
+        'greetings': tb_greetings,
+        'slackers': tb_slackers,
+        'url_history': tb_url_history
+    }
     mock_bot.dataset = mock.MagicMock()
     mock_bot.dataset.query.return_value = [{
         'title': 'mr-roboto',

@@ -215,3 +215,19 @@ def test_urls(mock_or_, date, keyword, expected, bot):
     asyncio.get_event_loop().run_until_complete(
         plugin.urls(mask, channel, args))
     assert bot.privmsg.called_once_with(channel, expected)
+
+
+def test_slackers(bot):
+    """Tests slackers command.
+
+    Args:
+        bot: Fake instance of an Irc3Bot.
+    """
+    mask = IrcString('nickname!@192.168.0.100')
+    channel = IrcString('#meleca')
+    args = {}
+    expected = 'somebody_else (100), somebody (10)'
+    plugin = Commands(bot)
+    asyncio.get_event_loop().run_until_complete(
+        plugin.slackers(mask, channel, args))
+    assert bot.privmsg.called_once_with(channel, expected)
