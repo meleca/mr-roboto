@@ -32,8 +32,15 @@ def bot():
         {'nick': 'somebody', 'words': 10},
         {'nick': 'somebody_else', 'words': 100}
     ]
+    tb_karma = mock.Mock()
+    tb_karma.find_one.return_value = {'status': 5}
+    tb_karma.find.return_value = [
+        {'entity': 'python', 'status': 5},
+        {'entity': 'java', 'status': -10}
+    ]
     database = {
         'greetings': tb_greetings,
+        'karma': tb_karma,
         'slackers': tb_slackers,
         'url_history': tb_url_history
     }
