@@ -29,6 +29,7 @@ class Behaviors(BasePlugin):
         # method to be executed.
         self.channel_rules = self._compile_rules([
             (r'(https?://[^ \t>\n\r\x01-\x1f]+)', self.handle_url),
+            (r'^(\w+(\+\+|--))$', self.karma)
         ])
 
     def _compile_rules(self, rules):
@@ -224,3 +225,21 @@ class Behaviors(BasePlugin):
         counter += words
         data = {'channel': channel, 'nick': nick, 'words': counter}
         table.upsert(data, ['channel', 'nick'])
+
+    async def karma(self, channel, entity):
+        """Updates karma status.
+
+        Args:
+            channel: IRC channel name.
+            entity: The karma operation containing the target
+                    and the operation (e.g. irc++).
+        """
+        entity = entity.decode('utf-8')  # :P
+        op, entity = entity[-2:], entity[:-2]
+        table = self.bot.dataset['karma']
+        result = table.find_one(channel=channel, entity=entity) or {}
+        status = result.get('status', 0)
+        status += (-1, 1)[op == '++']
+        data = {'channel': channel, 'entity': entity, 'status': status}
+        table.upsert(data, ['channel', 'entity'])
+        self.bot.privmsg(channel, f'{entity} ({status})')
