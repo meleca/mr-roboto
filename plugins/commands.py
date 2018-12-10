@@ -244,3 +244,14 @@ class Commands(BasePlugin):
         result = table.find(channel=target, order_by='-words') or []
         rank = [f'{row["nick"]} ({row["words"]})' for row in result]
         self.bot.privmsg(target, ', '.join(rank))
+
+    @command(permission='view')
+    async def karma(self, mask, target, args):
+        """Prints channel's karma list.
+
+        %%karma
+        """
+        table = self.bot.dataset['karma']
+        result = table.find(channel=target, order_by='-status') or []
+        karmas = [f'{row["entity"]} ({row["status"]})' for row in result]
+        self.bot.privmsg(target, ', '.join(karmas))
