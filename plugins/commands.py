@@ -233,3 +233,14 @@ class Commands(BasePlugin):
             _title = item.get('title', '')
             msg = f'{_dt} {_url} [{_title}]'
             self.bot.privmsg(target, msg)
+
+    @command(permission='view')
+    async def slackers(self, mask, target, args):
+        """Prints channel's slackers rank.
+
+        %%slackers
+        """
+        table = self.bot.dataset['slackers']
+        result = table.find(channel=target, order_by='-words') or []
+        rank = [f'{row["nick"]} ({row["words"]})' for row in result]
+        self.bot.privmsg(target, ', '.join(rank))
