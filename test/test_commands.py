@@ -231,3 +231,19 @@ def test_slackers(bot):
     asyncio.get_event_loop().run_until_complete(
         plugin.slackers(mask, channel, args))
     assert bot.privmsg.called_once_with(channel, expected)
+
+
+def test_karma(bot):
+    """Tests karma command.
+
+    Args:
+        bot: Fake instance of an Irc3Bot.
+    """
+    mask = IrcString('nickname!@192.168.0.100')
+    channel = IrcString('#meleca')
+    args = {}
+    expected = 'python (5), java (-10)'
+    plugin = Commands(bot)
+    asyncio.get_event_loop().run_until_complete(
+        plugin.karma(mask, channel, args))
+    assert bot.privmsg.called_once_with(channel, expected)

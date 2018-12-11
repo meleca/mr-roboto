@@ -63,9 +63,12 @@ def test_behaviors_say_hi(bot):
     assert bot.privmsg.called_once_with(channel, 'mybot: Hey there!')
 
 
+@asynctest.patch.object(Behaviors, 'karma')
 @asynctest.patch.object(Behaviors, 'slack_meter')
 @asynctest.patch.object(Behaviors, 'handle_url')
-def test_behaviors_handle_message(mock_handle_url, mock_slack_meter, bot):
+def test_behaviors_handle_message(
+    mock_handle_url, mock_slack_meter, mock_karma, bot
+):
     """Tests handle_message method simulating an URL read from channel.
 
     Args:
@@ -82,6 +85,7 @@ def test_behaviors_handle_message(mock_handle_url, mock_slack_meter, bot):
     assert mock_handle_url.called_once_with(channel, data.encode('utf-8'))
     assert mock_slack_meter.called_once_with(
         channel=channel, nick=mask.nick, message=data)
+    assert not mock_karma.called
 
 
 @asynctest.patch.object(Behaviors, 'handle_url')
@@ -154,3 +158,18 @@ def test_behaviors_slack_meter(bot):
     asyncio.get_event_loop().run_until_complete(
         plugin.slack_meter(channel, nick, msg))
     assert bot.dataset['slackers'].upsert.called_once
+
+
+def test_behaviors_karma(bot):
+    """Tests karma method.
+
+    Args:
+        bot: Fake instance of an Irc3Bot.
+    """
+    channel = IrcString('#meleca')
+    entity = b'python++'
+    plugin = Behaviors(bot)
+    asyncio.get_event_loop().run_until_complete(
+        plugin.karma(channel, entity))
+    assert bot.dataset['karma'].upsert.called_once
+    assert bot.privmsg.called_once_with(channel, 'python (6)')
