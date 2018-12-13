@@ -247,3 +247,23 @@ def test_karma(bot):
     asyncio.get_event_loop().run_until_complete(
         plugin.karma(mask, channel, args))
     assert bot.privmsg.called_once_with(channel, expected)
+
+
+def test_about(bot):
+    """Tests about command.
+
+    Args:
+        bot: Fake instance of an Irc3Bot.
+    """
+    mask = IrcString('nickname!@192.168.0.100')
+    channel = IrcString('#meleca')
+    args = {}
+    expected = (
+        f'Hi there, my name is {bot.nick} and I am an IRC bot '
+        'written in Python. If you wanna know more about me take '
+        'a look at my Github page https://github.com/meleca/mr-roboto/.'
+    )
+    plugin = Commands(bot)
+    asyncio.get_event_loop().run_until_complete(
+        plugin.about(mask, channel, args))
+    assert bot.privmsg.called_once_with(channel, expected)
