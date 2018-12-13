@@ -255,3 +255,16 @@ class Commands(BasePlugin):
         result = table.find(channel=target, order_by='-status') or []
         karmas = [f'{row["entity"]} ({row["status"]})' for row in result]
         self.bot.privmsg(target, ', '.join(karmas))
+
+    @command(permission='view')
+    async def about(self, mask, target, args):
+        """Prints about message.
+
+        %%about
+        """
+        message = (
+            f'Hi there, my name is {self.bot.nick} and I am an IRC bot '
+            'written in Python. If you wanna know more about me take '
+            'a look at my Github page https://github.com/meleca/mr-roboto/.'
+        )
+        self.bot.privmsg(target, message)
