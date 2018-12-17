@@ -3,6 +3,7 @@ from config import conf
 from irc3 import IrcBot
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+import re
 
 
 class ReloadEventHandler(FileSystemEventHandler):
@@ -32,10 +33,19 @@ class ReloadEventHandler(FileSystemEventHandler):
             self.bot.reload(*local_plugins)
 
 
+def get_version():
+    regex = re.compile(r'VERSION = (.*)')
+    with open('Makefile') as mkfile:
+        for line in mkfile:
+            match = regex.match(line)
+            if match:
+                return match.group(1)
+
+
 def main():
     """Initializes a new irc3 bot."""
     bot = IrcBot.from_config(conf)
-
+    bot.version = get_version()
     observer = Observer()
     observer.schedule(
         ReloadEventHandler(bot, conf),
