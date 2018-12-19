@@ -33,13 +33,14 @@ class ReloadEventHandler(FileSystemEventHandler):
             self.bot.reload(*local_plugins)
 
 
-def get_version():
-    regex = re.compile(r'VERSION = (\d+.\d+.\d+)')
+def get_version_from_file(filename):
+    """Tries to get bot's version number originally stored on Makefile."""
+    regex = re.compile(r'VERSION = (\d+.\d+.\d+)$')
     match = None
 
     try:
-        with open('Makefile') as mkfile:
-            for line in mkfile:
+        with open(filename) as vfile:
+            for line in vfile:
                 match = regex.match(line)
                 if match:
                     break
@@ -52,7 +53,7 @@ def get_version():
 def main():
     """Initializes a new irc3 bot."""
     bot = IrcBot.from_config(conf)
-    bot.version = get_version()
+    bot.version = get_version_from_file('Makefile')
     observer = Observer()
     observer.schedule(
         ReloadEventHandler(bot, conf),
