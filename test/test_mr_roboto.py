@@ -31,6 +31,23 @@ def test_main(mock_ircbot, mock_observer, mock_reloader, root_directory, bot):
     assert bot.run.called_once_with(forever=True)
 
 
+def test_get_version_from_file(bot):
+    """Tests the error path for get_version_from_file().
+
+    Args:
+        bot: Fake instance of an Irc3Bot.
+    """
+    mock_file = mock.mock_open(read_data='VERSION = 0.1.0')
+    with mock.patch('mr_roboto.open', mock_file) as f:
+        assert mr_roboto.get_version_from_file(f) == '0.1.0'
+
+    mock_file = mock.mock_open(read_data='VERSION = xx.0.z')
+    with mock.patch('mr_roboto.open', mock_file) as f:
+        assert mr_roboto.get_version_from_file(f) == '?.?.?'
+
+    assert mr_roboto.get_version_from_file('') == '?.?.?'
+
+
 @mock.patch('mr_roboto.ReloadEventHandler')
 @mock.patch('mr_roboto.Observer')
 @mock.patch('mr_roboto.IrcBot')
