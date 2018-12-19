@@ -34,7 +34,11 @@ class ReloadEventHandler(FileSystemEventHandler):
 
 
 def get_version_from_file(filename):
-    """Tries to get bot's version number originally stored on Makefile."""
+    """Try to get bot's version from desired file.
+
+    Args:
+        filename: File name where version number is.
+    """
     regex = re.compile(r'VERSION = (\d+.\d+.\d+)$')
     match = None
 
@@ -45,7 +49,7 @@ def get_version_from_file(filename):
                 if match:
                     break
     except OSError as err:
-        print(f'Failed to open Makefile: {err.strerror}')
+        print(f'Failed to open {filename}: {err.strerror}')
 
     return match.group(1) if match else '?.?.?'
 
