@@ -34,12 +34,19 @@ class ReloadEventHandler(FileSystemEventHandler):
 
 
 def get_version():
-    regex = re.compile(r'VERSION = (.*)')
-    with open('Makefile') as mkfile:
-        for line in mkfile:
-            match = regex.match(line)
-            if match:
-                return match.group(1)
+    regex = re.compile(r'VERSION = (\d+.\d+.\d+)')
+    match = None
+
+    try:
+        with open('Makefile') as mkfile:
+            for line in mkfile:
+                match = regex.match(line)
+                if match:
+                    break
+    except OSError as err:
+        print(f'Failed to open Makefile: {err.strerror}')
+
+    return match.group(1) if match else '?.?.?'
 
 
 def main():
