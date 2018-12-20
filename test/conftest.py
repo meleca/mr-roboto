@@ -15,6 +15,7 @@ def bot():
     """Fake instance of an Irc3Bot."""
     mock_bot = mock.Mock()
     mock_bot.nick = 'mybot'
+    mock_bot.version = '0.1.0'
     mock_bot.config = mock.Mock(database='sqlite:///:memory:')
     mock_bot.channels = ['#meleca']
 

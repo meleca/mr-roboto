@@ -3,6 +3,7 @@ from config import conf
 from irc3 import IrcBot
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+import re
 
 
 class ReloadEventHandler(FileSystemEventHandler):
@@ -32,10 +33,31 @@ class ReloadEventHandler(FileSystemEventHandler):
             self.bot.reload(*local_plugins)
 
 
+def get_version_from_file(filename):
+    """Try to get bot's version from desired file.
+
+    Args:
+        filename: File name where version number is.
+    """
+    regex = re.compile(r'VERSION = (\d+.\d+.\d+)$')
+    match = None
+
+    try:
+        with open(filename) as vfile:
+            for line in vfile:
+                match = regex.match(line)
+                if match:
+                    break
+    except OSError as err:
+        print(f'Failed to open {filename}: {err.strerror}')
+
+    return match.group(1) if match else '?.?.?'
+
+
 def main():
     """Initializes a new irc3 bot."""
     bot = IrcBot.from_config(conf)
-
+    bot.version = get_version_from_file('Makefile')
     observer = Observer()
     observer.schedule(
         ReloadEventHandler(bot, conf),

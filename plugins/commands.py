@@ -265,6 +265,7 @@ class Commands(BasePlugin):
         message = (
             f'Hi there, my name is {self.bot.nick} and I am an IRC bot '
             'written in Python. If you wanna know more about me take '
-            'a look at my Github page https://github.com/meleca/mr-roboto/.'
+            'a look at my Github page https://github.com/meleca/mr-roboto/. '
+            f'Currently running v{self.bot.version}.'
         )
         self.bot.privmsg(target, message)

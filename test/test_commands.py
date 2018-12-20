@@ -261,7 +261,8 @@ def test_about(bot):
     expected = (
         f'Hi there, my name is {bot.nick} and I am an IRC bot '
         'written in Python. If you wanna know more about me take '
-        'a look at my Github page https://github.com/meleca/mr-roboto/.'
+        'a look at my Github page https://github.com/meleca/mr-roboto/. '
+        f'Currently running v{bot.version}'
     )
     plugin = Commands(bot)
     asyncio.get_event_loop().run_until_complete(

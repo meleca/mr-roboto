@@ -1,3 +1,6 @@
+# Bot version x.y.z
+VERSION = 0.1.0
+
 .PHONY: run test migrate
 
 run:
