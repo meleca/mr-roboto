@@ -568,10 +568,10 @@
         },
         "pre-commit": {
             "hashes": [
-                "sha256:33bb9bf599c334d458fa9e311bde54e0c306a651473b6a36fdb36a61c8605c89",
-                "sha256:e233f5cf3230ae9ed9ada132e9cf6890e18cc937adc669353fb64394f6e80c17"
+                "sha256:8cc5c3475a38dc50d700b079733f0d0754c50fb1a6fb1ec7ed16784c1e145d5b",
+                "sha256:1c1d0b64b3ceb8c688033847825cc9be19c2b3e2e58bf00b850487d3083dff6f"
             ],
-            "version": "==1.13.0"
+            "version": "==1.14.0"
         },
         "prompt-toolkit": {
             "hashes": [
