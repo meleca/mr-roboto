@@ -1,3 +1,4 @@
+from i18n.translate import _
 from irc3 import plugin
 from irc3.plugins.command import command
 import aiohttp
@@ -68,7 +69,7 @@ class Commands(BasePlugin):
             async with session.get(url) as response:
                 response = await response.json()
 
-        msg = 'I\'m sorry but the stars seems to be unreachable.'
+        msg = _('I\'m sorry but the stars seems to be unreachable.')
         if response:
             horoscope = response.get('horoscope', '')
             if horoscope:
@@ -95,9 +96,9 @@ class Commands(BasePlugin):
                 'options': options,
             }, ['channel', 'nick'])
 
-            return 'Okie dokie'
+            return _('Okie dokie')
         except Exception:
-            return 'Sorry, looks like something went wrong :('
+            return _('Sorry, looks like something went wrong :(')
 
     @command(permission='view')
     async def joke(self, mask, target, args):
@@ -148,7 +149,7 @@ class Commands(BasePlugin):
 
         except Exception as e:
             print(e)
-            return 'All work and no play makes Jack a dull boy'
+            return _('All work and no play makes Jack a dull boy')
 
     @command(permission='view')
     async def cebolate(self, mask, target, args):
@@ -262,10 +263,10 @@ class Commands(BasePlugin):
 
         %%about
         """
-        message = (
-            f'Hi there, my name is {self.bot.nick} and I am an IRC bot '
+        message = _((
+            'Hi there, my name is {nick} and I am an IRC bot '
             'written in Python. If you wanna know more about me take '
             'a look at my Github page https://github.com/meleca/mr-roboto/. '
-            f'Currently running v{self.bot.version}.'
-        )
+            'Currently running v{version}.'
+        )).format(nick=self.bot.nick, version=self.bot.version)
         self.bot.privmsg(target, message)

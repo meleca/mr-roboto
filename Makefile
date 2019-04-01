@@ -11,3 +11,6 @@ test:
 
 migrate:
 	pipenv run alembic upgrade head
+
+translate:
+	pipenv run python -m i18n.translate -b

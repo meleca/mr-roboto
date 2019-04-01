@@ -1,3 +1,4 @@
+from i18n.translate import _
 from irc3 import plugin, event, rfc
 from irc3.plugins.cron import cron
 from lxml import html
@@ -54,11 +55,11 @@ class Behaviors(BasePlugin):
         Automatic sends a random message every week day 9am.
         """
         feeling_sleepy = [
-            'Good morning',
-            'Good morning fellas',
-            'Morning',
-            'Hello everyone',
-            'I definitely need a coffee. Oh, hello btw.'
+            _('Good morning'),
+            _('Good morning fellas'),
+            _('Morning'),
+            _('Hello everyone'),
+            _('I definitely need a coffee. Oh, hello btw.')
         ]
         to_say = random.choice(feeling_sleepy)
 
@@ -71,7 +72,10 @@ class Behaviors(BasePlugin):
 
         Automatic sends a random message every week day 12pm.
         """
-        feeling_hungry = ['Lunch time', 'I\'m gonna get something to eat']
+        feeling_hungry = [
+            _('Lunch time'),
+            _('I\'m gonna get something to eat')
+        ]
         to_say = random.choice(feeling_hungry)
 
         for channel in list(self.bot.channels):
@@ -86,7 +90,7 @@ class Behaviors(BasePlugin):
             channel: Channel name.
         """
         if self.bot.nick != mask.nick:
-            message = f'{mask.nick}: Hi!'
+            message = _('{nick}: Hi!').format(nick=mask.nick)
             nick = mask.nick.lower()
             table = self.bot.dataset['greetings']
             result = table.find_one(channel=channel.replace('#', ''),
@@ -121,7 +125,7 @@ class Behaviors(BasePlugin):
 
             except Exception as e:
                 print(e)
-                self.bot.privmsg(target, 'Booom shakalaka')
+                self.bot.privmsg(target, _('Booom shakalaka'))
 
         await self.slack_meter(target, mask.nick, data)
 
@@ -154,7 +158,7 @@ class Behaviors(BasePlugin):
                     return
                 else:
                     self.bot.privmsg(
-                        target, 'It seems this site has a broken charset')
+                        target, _('It seems this site has a broken charset'))
                     return
 
             page = html.fromstring(content)
@@ -165,16 +169,16 @@ class Behaviors(BasePlugin):
                 self.bot.privmsg(target, f'[{history.get("title")}]')
 
         def handle_image(target, subtype, data):
-            self.bot.privmsg(target, 'Looks like an image')
+            self.bot.privmsg(target, _('Looks like an image'))
 
         def handle_audio(target, subtype, data):
-            self.bot.privmsg(target, 'Do you know I\'m deaf right?')
+            self.bot.privmsg(target, _('Do you know I\'m deaf right?'))
 
         def handle_video(target, subtype, data):
-            self.bot.privmsg(target, 'For God sake I\'m blind')
+            self.bot.privmsg(target, _('For God sake I\'m blind'))
 
         def handle_default(target, subtype, data):
-            self.bot.privmsg(target, 'What kind of weed is that?')
+            self.bot.privmsg(target, _('What kind of weed is that?'))
 
         type_handlers = {
             u'text': handle_text,
@@ -191,7 +195,7 @@ class Behaviors(BasePlugin):
                 if not match:
                     self.bot.privmsg(
                         target,
-                        'My sources say that this links does not exists')
+                        _('My sources say that this links does not exists'))
                     return
 
                 mime_type = match.group(1)

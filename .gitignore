@@ -68,3 +68,6 @@ settings.ini
 
 # Ignore local env files
 .env
+
+# Ignore locale files
+locale/

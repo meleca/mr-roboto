@@ -22,6 +22,7 @@ watchdog = "*"
 dataset = "*"
 alembic = "*"
 python-decouple = "*"
+polib = "*"
 
 [requires]
 python_version = "3.7"
