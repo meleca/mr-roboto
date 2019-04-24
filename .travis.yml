@@ -4,6 +4,6 @@ cache: pip
 python: "3.7"
 install:
   - pip install pipenv --upgrade
-  - pipenv install --dev
+  - pipenv sync -d
 script: make test
 after_success: codecov
