@@ -354,10 +354,10 @@
         },
         "asynctest": {
             "hashes": [
-                "sha256:ade427a711d18016f35fb0c5d412f0ed63fb074a6084b67ff2dad48f50b0d6ca",
-                "sha256:b29ee07019088f6f33fd7ab6826308bbd7ea8bc16ba2f0aa0f70551e70054935"
+                "sha256:5da6118a7e6d6b54d83a8f7197769d046922a44d2a99c21382f0a6e4fadae676",
+                "sha256:c27862842d15d83e6a34eb0b2866c323880eb3a75e4485b079ea11748fd77fac"
             ],
-            "version": "==0.12.4"
+            "version": "==0.13.0"
         },
         "atomicwrites": {
             "hashes": [
@@ -483,10 +483,10 @@
         },
         "importlib-metadata": {
             "hashes": [
-                "sha256:6a0080fdc87c8225e004b00b55bd1eab153a32ef5a11e17c14de81edbb8ed1a7",
-                "sha256:c0bdce522d5b215c710f237cfc1f58ace432affd3052176bbb719f53e2465256"
+                "sha256:0e375a4c177090292988d1c2f997c7c2467d908c1adbed3e08fb511486c85457",
+                "sha256:440815529340fb7fdd6a83ebf4258cc2860fb3770d37b52875e37c6f509a4cd6"
             ],
-            "version": "==0.11"
+            "version": "==0.13"
         },
         "ipdb": {
             "hashes": [
@@ -646,10 +646,10 @@
         },
         "requests": {
             "hashes": [
-                "sha256:502a824f31acdacb3a35b6690b5fbf0bc41d63a24a45c4004352b0242707598e",
-                "sha256:7bf2a778576d825600030a110f3c0e3e8edc51dfaafe1c146e39a2027784957b"
+                "sha256:11e007a8a2aa0323f5a921e9e6a2d7e4e67d9877e85773fba9ba6419025cbeb4",
+                "sha256:9cf5292fcd0f598c671cfc1e0d7d1a7f13bb8085e9a590f48c010551dc6c4b31"
             ],
-            "version": "==2.21.0"
+            "version": "==2.22.0"
         },
         "six": {
             "hashes": [
@@ -681,10 +681,10 @@
         },
         "virtualenv": {
             "hashes": [
-                "sha256:15ee248d13e4001a691d9583948ad3947bcb8a289775102e4c4aa98a8b7a6d73",
-                "sha256:bfc98bb9b42a3029ee41b96dc00a34c2f254cbf7716bec824477b2c82741a5c4"
+                "sha256:99acaf1e35c7ccf9763db9ba2accbca2f4254d61d1912c5ee364f9cc4a8942a0",
+                "sha256:fe51cdbf04e5d8152af06c075404745a7419de27495a83f0d72518ad50be3ce8"
             ],
-            "version": "==16.5.0"
+            "version": "==16.6.0"
         },
         "wcwidth": {
             "hashes": [
@@ -695,10 +695,10 @@
         },
         "zipp": {
             "hashes": [
-                "sha256:46dfd547d9ccbf8bdc26ecea52818046bb28509f12bb6a0de1cd66ab06e9a9be",
-                "sha256:d7ac25f895fb65bff937b381353c14eb1fa23d35f40abd72a5342cd57eb57fd1"
+                "sha256:8c1019c6aad13642199fbe458275ad6a84907634cc9f0989877ccc4a2840139d",
+                "sha256:ca943a7e809cc12257001ccfb99e3563da9af99d52f261725e96dfe0f9275bc3"
             ],
-            "version": "==0.5.0"
+            "version": "==0.5.1"
         }
     }
 }
