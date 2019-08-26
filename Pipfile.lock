@@ -116,11 +116,10 @@
         },
         "irc3": {
             "hashes": [
-                "sha256:66ee7040bd873d083cac09fd45b4d044f07f1c933f57f2d7209d2d8654de3cb0",
-                "sha256:d538a6d42506aac506d214fbff9c5da7061cf7ff7302e9148ac52ad276b2f72c"
+                "sha256:154913b379f4e5e803cf2e14e1b5272138b495a10003a6c1c6bb969c415a3283",
+                "sha256:80f1842935a7109aadde2ad0eb2a0cafeb098b820d6e3d37e8af93265db5c54f"
             ],
-            "index": "pypi",
-            "version": "==1.1.2"
+            "version": "==1.1.3"
         },
         "lxml": {
             "hashes": [
