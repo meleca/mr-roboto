@@ -84,11 +84,10 @@
         },
         "dataset": {
             "hashes": [
-                "sha256:06e6e8166a2ce12524ffbed97b82866caeaa2dd8e85ee65baccf3b815528e22e",
-                "sha256:22305959711499b0da0464298f3589cd33cccf84cfdcce91dae352a528cb4821"
+                "sha256:3008cd0c1ac80d0ee0b8874a718e689a104ecb7eda37e0e59c758c2696465467",
+                "sha256:311cccc01266e6b81b24b54d6d6e0da277d6648525d780987d62d2ed87eb7a05"
             ],
-            "index": "pypi",
-            "version": "==1.1.2"
+            "version": "==1.2.1"
         },
         "docopt": {
             "hashes": [
