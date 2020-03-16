@@ -84,10 +84,10 @@
         },
         "dataset": {
             "hashes": [
-                "sha256:8cbfeda10c06db34603afc062fa7837a23cec85dd342b05fce6304d006a81bee",
-                "sha256:b9203ac8fe2a80a4c91ab7b9725c1d7cefce63608c37b913f8fe9bff4565f42b"
+                "sha256:aaf634a4625d45a4a9ae59a581748f12ea58603ad73a2016a09c7dc68d0908ce",
+                "sha256:c6a401326ecab955c1d70400cfc4e713a339a14f0f4995b3bfa98b88b2a1d4ce"
             ],
-            "version": "==1.2.2"
+            "version": "==1.3.0"
         },
         "docopt": {
             "hashes": [
@@ -270,9 +270,9 @@
         },
         "sqlalchemy": {
             "hashes": [
-                "sha256:64a7b71846db6423807e96820993fa12a03b89127d278290ca25c0b11ed7b4fb"
+                "sha256:c4cca4aed606297afbe90d4306b49ad3a4cd36feb3f87e4bfd655c57fd9ef445"
             ],
-            "version": "==1.3.13"
+            "version": "==1.3.15"
         },
         "tzlocal": {
             "hashes": [
@@ -553,10 +553,10 @@
         },
         "pre-commit": {
             "hashes": [
-                "sha256:09ebe467f43ce24377f8c2f200fe3cd2570d328eb2ce0568c8e96ce19da45fa6",
-                "sha256:f8d555e31e2051892c7f7b3ad9f620bd2c09271d87e9eedb2ad831737d6211eb"
+                "sha256:487c675916e6f99d355ec5595ad77b325689d423ef4839db1ed2f02f639c9522",
+                "sha256:c0aa11bce04a7b46c5544723aedf4e81a4d5f64ad1205a30a9ea12d5e81969e1"
             ],
-            "version": "==2.1.1"
+            "version": "==2.2.0"
         },
         "prompt-toolkit": {
             "hashes": [
@@ -609,10 +609,10 @@
         },
         "pytest": {
             "hashes": [
-                "sha256:0d5fe9189a148acc3c3eb2ac8e1ac0742cb7618c084f3d228baaec0c254b318d",
-                "sha256:ff615c761e25eb25df19edddc0b970302d2a9091fbce0e7213298d85fb61fef6"
+                "sha256:0e5b30f5cb04e887b91b1ee519fa3d89049595f428c1db76e73bd7f17b09b172",
+                "sha256:84dde37075b8805f3d1f392cc47e38a0e59518fb46a431cfdaf7cf1ce805f970"
             ],
-            "version": "==5.3.5"
+            "version": "==5.4.1"
         },
         "pytest-cov": {
             "hashes": [
@@ -674,10 +674,10 @@
         },
         "virtualenv": {
             "hashes": [
-                "sha256:5eba85dfa176fde0425b9b3042ed83f05a1b6309a616b8a3e2a9a94f4bfa27b7",
-                "sha256:99f131be2f90ff2a8fd711261a27845b6c50fc008bef815e710c7fa844eb1467"
+                "sha256:10750cac3b5a9e6eed54d0f1f8222c550dc47f84609c95cbc504d44a58a048b8",
+                "sha256:8512e83f1d90f8e481024d58512ac9c053bf16f54d9138520a0929396820dd78"
             ],
-            "version": "==20.0.9"
+            "version": "==20.0.10"
         },
         "wcwidth": {
             "hashes": [
