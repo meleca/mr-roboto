@@ -102,10 +102,10 @@
         },
         "croniter": {
             "hashes": [
-                "sha256:15597ef0639f8fbab09cbf8c277fa8c65c8b9dbe818c4b2212f95dbc09c6f287",
-                "sha256:7186b9b464f45cf3d3c83a18bc2344cc101d7b9fd35a05f2878437b14967e964"
+                "sha256:8636e7f0ce842b4192b7f097cab724fc15bf2459265f1a2bc6cf6eacfa44420e",
+                "sha256:fb796c91400a327b1495addf653cfb35d32ffd878b3979f90edcb36d58b0d4f5"
             ],
-            "version": "==0.3.34"
+            "version": "==1.0.5"
         },
         "dataset": {
             "hashes": [
