@@ -817,10 +817,10 @@
         },
         "ipython": {
             "hashes": [
-                "sha256:3455b020a895710c4366e8d1b326e5ee6aa684607907fc96895e7b8359569f49",
-                "sha256:69178f32bf9c6257430b6f592c3ae230c32861a1966d2facec454e09078e232d"
+                "sha256:cb6aef731bf708a7727ab6cde8df87f0281b1427d41e65d62d4b68934fa54e97",
+                "sha256:fc60ef843e0863dd4e24ab2bb5698f071031332801ecf8d1aeb4fb622056545c"
             ],
-            "version": "==7.23.0"
+            "version": "==7.30.1"
         },
         "ipython-genutils": {
             "hashes": [
