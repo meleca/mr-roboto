@@ -144,10 +144,10 @@
         },
         "dataset": {
             "hashes": [
-                "sha256:0c3e3226b1bbd79d6499892d78af0242d9dff114fd1174a0826243db8adeef60",
-                "sha256:bd51e889b0342411d187e07c9a64153c5b398c7a92cc4fbb449f83e858855d04"
+                "sha256:3eb75426c422146acd150ed68aee39984050f8dd8e985675ba084732e6ccbf79",
+                "sha256:4c367a7c0a85c4e748efda34eee300c3fcc3f076c75c3290b749a7a05335c847"
             ],
-            "version": "==1.5.0"
+            "version": "==1.5.2"
         },
         "docopt": {
             "hashes": [
