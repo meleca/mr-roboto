@@ -18,11 +18,10 @@
     "default": {
         "aiocron": {
             "hashes": [
-                "sha256:7f7c343b5bb18695206714f038726e3795e6dfa69affcc25abe17838d51be69c",
-                "sha256:f20b29ba8207d789b44ecb516ef084fa84d3e02dde1c82fa4009c90b072b63c7"
+                "sha256:48546513faf2eb7901e65a64eba7b653c80106ed00ed9ca3419c3d10b6555a01",
+                "sha256:b6313214c311b62aa2220e872b94139b648631b3103d062ef29e5d3230ddce6d"
             ],
-            "index": "pypi",
-            "version": "==1.3"
+            "version": "==1.8"
         },
         "aiohttp": {
             "hashes": [
