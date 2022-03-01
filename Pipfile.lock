@@ -164,10 +164,10 @@
         },
         "irc3": {
             "hashes": [
-                "sha256:7c6e43c939804355021d1c6c7c3be9c962df592bd1a3d39d3acdf7fcef62508d",
-                "sha256:fd549dd1b1b3eca5dea4f9e150e947e43c9db9168791e82fcafa61cfb0e78773"
+                "sha256:088b7be88817dee5d02e7e06c9dbf503c8e807a8cccc9b36b5be419918574cf1",
+                "sha256:6800c8876a889736961e199e834dc9933244affa20d4da086fb4b47f76984e12"
             ],
-            "version": "==1.1.6"
+            "version": "==1.1.7"
         },
         "lxml": {
             "hashes": [
