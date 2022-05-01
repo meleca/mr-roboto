@@ -742,10 +742,10 @@
         },
         "identify": {
             "hashes": [
-                "sha256:9bcc312d4e2fa96c7abebcdfb1119563b511b5e3985ac52f60d9116277865b2e",
-                "sha256:ad9f3fa0c2316618dc4d840f627d474ab6de106392a4f00221820200f490f5a8"
+                "sha256:3acfe15a96e4272b4ec5662ee3e231ceba976ef63fd9980ed2ce9cc415df393f",
+                "sha256:c83af514ea50bf2be2c4a3f2fb349442b59dc87284558ae9ff54191bff3541d2"
             ],
-            "version": "==2.2.4"
+            "version": "==2.5.0"
         },
         "idna": {
             "hashes": [
