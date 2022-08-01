@@ -306,11 +306,8 @@
             "version": "==1.11.0"
         },
         "pycodestyle": {
-            "hashes": [
-                "sha256:514f76d918fcc0b55c6680472f0a37970994e07bbb80725808c17089be302068",
-                "sha256:c389c1d06bf7904078ca03399a4816f974a1d590090fecea0c63ec26ebaf1cef"
-            ],
-            "version": "==2.7.0"
+            "hashes": [],
+            "version": "==2.9.0"
         },
         "pyflakes": {
             "hashes": [
