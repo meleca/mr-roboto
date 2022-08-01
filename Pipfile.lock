@@ -206,11 +206,8 @@
             "version": "==6.4.2"
         },
         "decorator": {
-            "hashes": [
-                "sha256:6f201a6c4dac3d187352661f508b9364ec8091217442c9478f1f83c003a0f060",
-                "sha256:945d84890bb20cc4a2f4a31fc4311c0c473af65ea318617f13a7257c9a58bc98"
-            ],
-            "version": "==5.0.7"
+            "hashes": [],
+            "version": "==5.1.1"
         },
         "entrypoints": {
             "hashes": [
