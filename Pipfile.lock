@@ -214,11 +214,8 @@
             "version": "==0.4"
         },
         "flake8": {
-            "hashes": [
-                "sha256:1aa8990be1e689d96c745c5682b687ea49f2e05a443aff1f8251092b0014e378",
-                "sha256:3b9f848952dddccf635be78098ca75010f073bfe14d2c6bda867154bea728d2a"
-            ],
-            "version": "==3.9.1"
+            "hashes": [],
+            "version": "==5.0.2"
         },
         "identify": {
             "hashes": [
