@@ -66,11 +66,8 @@
             "version": "==3.3"
         },
         "irc3": {
-            "hashes": [
-                "sha256:7c6e43c939804355021d1c6c7c3be9c962df592bd1a3d39d3acdf7fcef62508d",
-                "sha256:fd549dd1b1b3eca5dea4f9e150e947e43c9db9168791e82fcafa61cfb0e78773"
-            ],
-            "version": "==1.1.6"
+            "hashes": [],
+            "version": "==1.1.8"
         },
         "lxml": {
             "hashes": [
