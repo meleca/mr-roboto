@@ -357,11 +357,8 @@
             "version": "==1.26.11"
         },
         "virtualenv": {
-            "hashes": [
-                "sha256:09c61377ef072f43568207dc8e46ddeac6bcdcaf288d49011bda0e7f4d38c4a2",
-                "sha256:a935126db63128861987a7d5d30e23e8ec045a73840eeccb467c148514e29535"
-            ],
-            "version": "==20.4.4"
+            "hashes": [],
+            "version": "==20.16.2"
         },
         "wcwidth": {
             "hashes": [
