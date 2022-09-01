@@ -334,11 +334,8 @@
             "version": "==6.0"
         },
         "requests": {
-            "hashes": [
-                "sha256:27973dd4a904a4f13b263a19c866c13b92a39ed1c964655f025f3f8d3d75b804",
-                "sha256:c210084e36a42ae6b9219e00e48287def368a26d03a048ddad7bfee44f75871e"
-            ],
-            "version": "==2.25.1"
+            "hashes": [],
+            "version": "==2.28.1"
         },
         "six": {
             "hashes": [],
