@@ -190,11 +190,8 @@
             "version": "==2022.6.15"
         },
         "cfgv": {
-            "hashes": [
-                "sha256:32e43d604bbe7896fe7c248a9c2276447dbef840feb28fe20494f62af110211d",
-                "sha256:cf22deb93d4bcf92f345a5c3cd39d3d41d6340adc60c78bbbd6588c384fda6a1"
-            ],
-            "version": "==3.2.0"
+            "hashes": [],
+            "version": "==3.3.1"
         },
         "chardet": {
             "hashes": [],
