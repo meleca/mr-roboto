@@ -254,7 +254,7 @@
         },
         "more-itertools": {
             "hashes": [],
-            "version": "==8.14.0"
+            "version": "==9.0.0"
         },
         "nodeenv": {
             "hashes": [],
