@@ -128,7 +128,7 @@
         },
         "sqlalchemy": {
             "hashes": [],
-            "version": "==1.4.40"
+            "version": "==1.4.44"
         },
         "tzlocal": {
             "hashes": [],
