@@ -354,7 +354,7 @@
         },
         "urllib3": {
             "hashes": [],
-            "version": "==1.26.12"
+            "version": "==1.26.13"
         },
         "virtualenv": {
             "hashes": [],
