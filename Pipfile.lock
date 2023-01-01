@@ -323,7 +323,7 @@
         },
         "pytest": {
             "hashes": [],
-            "version": "==7.1.2"
+            "version": "==7.2.0"
         },
         "pytest-cov": {
             "hashes": [],
