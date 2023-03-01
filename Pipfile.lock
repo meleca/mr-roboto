@@ -352,7 +352,7 @@
         },
         "virtualenv": {
             "hashes": [],
-            "version": "==20.16.4"
+            "version": "==20.20.0"
         },
         "wcwidth": {
             "hashes": [
