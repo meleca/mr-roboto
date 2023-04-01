@@ -256,7 +256,7 @@
         },
         "packaging": {
             "hashes": [],
-            "version": "==21.3"
+            "version": "==23.0"
         },
         "parso": {
             "hashes": [],
