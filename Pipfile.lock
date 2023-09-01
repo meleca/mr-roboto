@@ -38,7 +38,7 @@
         },
         "attrs": {
             "hashes": [],
-            "version": "==22.1.0"
+            "version": "==23.1.0"
         },
         "chardet": {
             "hashes": [],
@@ -173,7 +173,7 @@
         },
         "attrs": {
             "hashes": [],
-            "version": "==22.1.0"
+            "version": "==23.1.0"
         },
         "backcall": {
             "hashes": [
