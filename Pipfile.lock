@@ -114,7 +114,7 @@
         },
         "pyyaml": {
             "hashes": [],
-            "version": "==6.0"
+            "version": "==6.0.1"
         },
         "six": {
             "hashes": [],
@@ -325,7 +325,7 @@
         },
         "pyyaml": {
             "hashes": [],
-            "version": "==6.0"
+            "version": "==6.0.1"
         },
         "requests": {
             "hashes": [],
