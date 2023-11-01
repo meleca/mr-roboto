@@ -286,7 +286,7 @@
         },
         "prompt-toolkit": {
             "hashes": [],
-            "version": "==3.0.30"
+            "version": "==3.0.39"
         },
         "ptyprocess": {
             "hashes": [
