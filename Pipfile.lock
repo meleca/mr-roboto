@@ -126,7 +126,7 @@
         },
         "tzlocal": {
             "hashes": [],
-            "version": "==4.2"
+            "version": "==5.2"
         },
         "venusian": {
             "hashes": [
