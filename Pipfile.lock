@@ -309,7 +309,7 @@
         },
         "pygments": {
             "hashes": [],
-            "version": "==2.13.0"
+            "version": "==2.16.1"
         },
         "pyparsing": {
             "hashes": [],
