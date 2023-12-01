@@ -276,7 +276,7 @@
         },
         "pre-commit": {
             "hashes": [],
-            "version": "==2.20.0"
+            "version": "==3.5.0"
         },
         "prompt-toolkit": {
             "hashes": [],
