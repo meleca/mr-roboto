@@ -210,7 +210,7 @@
         },
         "identify": {
             "hashes": [],
-            "version": "==2.5.3"
+            "version": "==2.5.33"
         },
         "idna": {
             "hashes": [],
