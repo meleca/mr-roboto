@@ -295,7 +295,7 @@
         },
         "pycodestyle": {
             "hashes": [],
-            "version": "==2.9.1"
+            "version": "==2.11.1"
         },
         "pyflakes": {
             "hashes": [],
