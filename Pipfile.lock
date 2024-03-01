@@ -342,7 +342,7 @@
         },
         "urllib3": {
             "hashes": [],
-            "version": "==1.26.12"
+            "version": "==2.2.1"
         },
         "virtualenv": {
             "hashes": [],
