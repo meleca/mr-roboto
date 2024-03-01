@@ -315,7 +315,7 @@
         },
         "pytest-cov": {
             "hashes": [],
-            "version": "==3.0.0"
+            "version": "==4.1.0"
         },
         "pyyaml": {
             "hashes": [],
