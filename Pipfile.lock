@@ -218,7 +218,7 @@
         },
         "importlib-metadata": {
             "hashes": [],
-            "version": "==4.12.0"
+            "version": "==7.0.1"
         },
         "ipdb": {
             "hashes": [],
