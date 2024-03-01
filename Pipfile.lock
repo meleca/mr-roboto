@@ -194,7 +194,7 @@
         },
         "coverage": {
             "hashes": [],
-            "version": "==6.4.4"
+            "version": "==7.4.3"
         },
         "decorator": {
             "hashes": [],
