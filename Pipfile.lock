@@ -134,7 +134,7 @@
         },
         "watchdog": {
             "hashes": [],
-            "version": "==2.1.9"
+            "version": "==4.0.0"
         },
         "yarl": {
             "hashes": [],
