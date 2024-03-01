@@ -80,7 +80,7 @@
         },
         "multidict": {
             "hashes": [],
-            "version": "==6.0.2"
+            "version": "==6.0.5"
         },
         "pathtools": {
             "hashes": [
