@@ -42,7 +42,7 @@
         },
         "chardet": {
             "hashes": [],
-            "version": "==5.0.0"
+            "version": "==5.2.0"
         },
         "croniter": {
             "hashes": [],
@@ -192,7 +192,7 @@
         },
         "chardet": {
             "hashes": [],
-            "version": "==5.0.0"
+            "version": "==5.2.0"
         },
         "codecov": {
             "hashes": [],
