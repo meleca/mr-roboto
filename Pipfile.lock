@@ -60,7 +60,7 @@
         },
         "idna": {
             "hashes": [],
-            "version": "==3.3"
+            "version": "==3.11"
         },
         "irc3": {
             "hashes": [],
@@ -220,7 +220,7 @@
         },
         "idna": {
             "hashes": [],
-            "version": "==3.3"
+            "version": "==3.11"
         },
         "importlib-metadata": {
             "hashes": [],
