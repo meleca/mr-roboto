@@ -68,7 +68,7 @@
         },
         "lxml": {
             "hashes": [],
-            "version": "==4.9.1"
+            "version": "==6.1.0"
         },
         "mako": {
             "hashes": [],
