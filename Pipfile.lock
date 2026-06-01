@@ -178,7 +178,7 @@
         },
         "certifi": {
             "hashes": [],
-            "version": "==2022.6.15"
+            "version": "==2026.5.20"
         },
         "cfgv": {
             "hashes": [],
